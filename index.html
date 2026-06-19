@@ -1,19 +1,657 @@
 <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VFE - Vasquez Factoring Exchange</title>
-  <style>
-    body { font-family: -apple-system, sans-serif; background: #0a0e27; color: #fff; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
-    h1 { font-size: 3rem; margin: 0; }
-    p { color: #8b9cc8; font-size: 1.25rem; }
-  </style>
-    </head>
-    <body>
-      <div>
-        <h1>VFE</h1>
-        <p>Vasquez Factoring Exchange &mdash; Coming Soon</p>
+<!-- VFE - the Glass Box. Single standalone file: all pages, styles, and script inline.
+     Public-safe throughout. Set hello@example.com and capital@example.com before publishing. -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VFE - the Glass Box</title>
+<meta name="description" content="VFE is software-native freight factoring: automated, verified at the source, and clear all the way down. Factoring is having its exchange moment." />
+<meta name="theme-color" content="#0a0c10" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0c10'/%3E%3Cpath d='M16 5l9 5.2v10.4L16 27l-9-5.4V10.2z' fill='none' stroke='%23c9a96e' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M16 5v22M7 10.2l9 5.4 9-5.4' fill='none' stroke='%23c9a96e' stroke-width='1' opacity='0.6'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>document.documentElement.className = "js";</script>
+<style>
+:root{
+  --gold:#c9a96e; --gold-light:#d4bb88; --gold-deep:#8a7548;
+  --bg:#0a0c10; --bg-1:#0d1016; --bg-2:#12151c; --bg-3:#181d27;
+  --surface:#1c2230; --border:#2a3142; --border-2:#323a4b;
+  --text:#e8e6e0; --text-2:#9aa0ad; --text-3:#8b94a3; --muted:#5b6371; --muted-2:#6a7180;
+  --green:#6fb88a;
+  --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --font-body:"Geist",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --maxw:1140px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--bg); color:var(--text-2); font-family:var(--font-body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden;}
+body::before{content:""; position:fixed; inset:0; z-index:-2; pointer-events:none; background:radial-gradient(900px 520px at 78% -8%, rgba(201,169,110,0.10), transparent 60%), radial-gradient(820px 600px at 0% 100%, rgba(90,134,168,0.06), transparent 55%), linear-gradient(180deg, var(--bg) 0%, var(--bg-1) 60%, var(--bg) 100%);}
+body::after{content:""; position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:0.4; background-image:linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px); background-size:64px 64px; mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);}
+a{color:inherit; text-decoration:none;}
+img,svg{display:block; max-width:100%;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+.narrow{max-width:880px;}
+section[id]{scroll-margin-top:88px;}
+
+/* view switching (SPA when .spa is set; else everything stacks = long-scroll fallback) */
+.spa .view{display:none;}
+.spa .view.active{display:block; animation:fadeview .4s ease;}
+@keyframes fadeview{from{opacity:0;}to{opacity:1;}}
+
+.kicker{font-family:var(--font-mono); font-weight:500; font-size:11px; letter-spacing:2.2px; text-transform:uppercase; color:var(--gold); display:inline-flex; align-items:center; gap:9px;}
+.kicker::before{content:""; width:18px; height:1px; background:var(--gold); opacity:0.7;}
+.kicker.center{justify-content:center;}
+h1,h2,h3{font-family:var(--font-display); color:var(--text); font-weight:600; letter-spacing:-0.4px; margin:0;}
+h1{font-size:clamp(40px,6.6vw,74px); line-height:1.0;}
+h2{font-size:clamp(28px,3.8vw,44px); line-height:1.08;}
+h3{font-size:20px; line-height:1.3; letter-spacing:-0.2px;}
+.lead{font-size:clamp(17px,1.7vw,20px); line-height:1.62; color:var(--text-2);}
+.serif-accent{color:var(--gold); font-style:italic;}
+
+.btn{display:inline-flex; align-items:center; gap:9px; cursor:pointer; font-family:var(--font-body); font-size:14.5px; font-weight:500; padding:13px 22px; border-radius:30px; border:1px solid transparent; transition:transform .18s ease, background .2s ease, border-color .2s ease, color .2s ease;}
+.btn:hover{transform:translateY(-2px);}
+.btn-gold{background:var(--gold); color:#15110a; border-color:var(--gold);}
+.btn-gold:hover{background:var(--gold-light); border-color:var(--gold-light);}
+.btn-ghost{background:transparent; color:var(--text); border-color:var(--border-2);}
+.btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+.btn .arrow{transition:transform .2s ease;}
+.btn:hover .arrow{transform:translateX(3px);}
+
+.nav{position:sticky; top:0; z-index:50; background:rgba(10,12,16,0.72); backdrop-filter:blur(14px) saturate(140%); -webkit-backdrop-filter:blur(14px) saturate(140%); border-bottom:1px solid rgba(42,49,66,0.7);}
+.nav-inner{display:flex; align-items:center; justify-content:space-between; height:68px;}
+.brand{display:flex; align-items:baseline; gap:11px; cursor:pointer;}
+.brand .mark{font-family:var(--font-display); font-weight:600; font-size:23px; letter-spacing:0.5px; color:var(--gold);}
+.brand .tag{font-family:var(--font-mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-3);}
+.nav-links{display:flex; align-items:center; gap:28px;}
+.nav-links a{font-size:14px; color:var(--text-2); transition:color .18s ease; position:relative; cursor:pointer;}
+.nav-links a:hover{color:var(--text);}
+.nav-links a.here{color:var(--gold);}
+.nav-links a::after{content:""; position:absolute; left:0; bottom:-6px; width:0; height:1px; background:var(--gold); transition:width .2s ease;}
+.nav-links a:hover::after,.nav-links a.here::after{width:100%;}
+
+.hero{position:relative; padding:clamp(56px,9vw,104px) 0 clamp(48px,7vw,88px);}
+.hero-grid{display:grid; grid-template-columns:1.12fr 0.88fr; gap:48px; align-items:center;}
+.hero-center{max-width:920px; margin:0 auto; text-align:center;}
+.hero-center .lead{margin-left:auto; margin-right:auto;}
+.status-pill{display:inline-flex; align-items:center; gap:9px; margin-bottom:26px; padding:7px 14px; border:1px solid var(--border-2); border-radius:30px; background:rgba(28,34,48,0.5); font-family:var(--font-mono); font-size:10.5px; letter-spacing:1.6px; text-transform:uppercase; color:var(--text-2);}
+.status-pill .dot{width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green);}
+.js .status-pill .dot{animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+.hero h1{margin-bottom:24px;}
+.hero h1 .light{color:var(--text);}
+.hero .lead{max-width:42ch; margin-bottom:34px;}
+.hero-actions{display:flex; flex-wrap:wrap; gap:14px; align-items:center;}
+.hero-center .hero-actions{justify-content:center;}
+
+.box-frame{position:relative; border:1px solid var(--border); border-radius:20px; padding:28px; background:linear-gradient(160deg, rgba(28,34,48,0.55), rgba(13,16,22,0.35)); box-shadow:0 40px 90px -30px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.04); overflow:hidden;}
+.box-frame .corner{position:absolute; width:14px; height:14px; border:1px solid var(--gold); opacity:0.55;}
+.c-tl{top:14px; left:14px; border-right:0; border-bottom:0;} .c-tr{top:14px; right:14px; border-left:0; border-bottom:0;}
+.c-bl{bottom:14px; left:14px; border-right:0; border-top:0;} .c-br{bottom:14px; right:14px; border-left:0; border-top:0;}
+.box-svg{width:100%; height:auto;}
+.js .cube{animation:float 7s ease-in-out infinite; transform-origin:center;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.box-caption{margin-top:18px; padding-top:18px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:12px;}
+.box-caption .label{font-family:var(--font-mono); font-size:10px; letter-spacing:1.6px; text-transform:uppercase; color:var(--text-3);}
+.box-caption .val{font-family:var(--font-mono); font-size:12.5px; color:var(--gold);}
+.frame-label{font-family:var(--font-mono); font-size:10px; letter-spacing:1.8px; text-transform:uppercase; color:var(--text-3); margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;}
+.frame-label .live{color:var(--gold); display:inline-flex; align-items:center; gap:7px;}
+.frame-label .live .d{width:6px; height:6px; border-radius:50%; background:var(--gold);}
+.js .frame-label .live .d{animation:pulse 2.4s ease-in-out infinite;}
+
+section{padding:clamp(60px,8vw,104px) 0;}
+.section-head{max-width:64ch; margin-bottom:52px;}
+.section-head.center{margin-left:auto; margin-right:auto; text-align:center;}
+.section-head .kicker{margin-bottom:20px;}
+.section-head h2{margin-bottom:20px;}
+.divider{height:1px; background:linear-gradient(90deg, var(--gold), transparent); opacity:0.5;}
+
+.prose p{margin:0 0 18px; max-width:66ch; color:var(--text-2);}
+.prose p:last-child{margin-bottom:0;}
+.prose strong{color:var(--text); font-weight:500;}
+
+.trio{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+.feature{border:1px solid var(--border); border-radius:14px; padding:28px 26px; background:linear-gradient(165deg, rgba(28,34,48,0.4), rgba(13,16,22,0.2)); transition:border-color .25s ease, transform .25s ease;}
+.feature:hover{border-color:var(--gold-deep); transform:translateY(-4px);}
+.feature .ico{width:32px; height:32px; margin-bottom:16px; color:var(--gold);}
+.feature h3{margin-bottom:9px;}
+.feature p{font-size:14.5px; color:var(--text-2); margin:0;}
+
+.pillars{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:16px; overflow:hidden;}
+.pillar{background:var(--bg-1); padding:30px 26px; transition:background .25s ease;}
+.pillar:hover{background:var(--bg-2);}
+.pillar .n{font-family:var(--font-mono); font-size:11px; color:var(--gold); letter-spacing:1px; margin-bottom:16px;}
+.pillar h3{margin-bottom:10px;}
+.pillar p{font-size:14px; color:var(--text-2); margin:0;}
+
+.band{border:1px solid var(--border); border-radius:22px; overflow:hidden; background:linear-gradient(150deg, rgba(28,34,48,0.6), rgba(13,16,22,0.3));}
+.band.center{padding:clamp(40px,5vw,64px); text-align:center;}
+.band.center .kicker{justify-content:center; margin-bottom:22px;}
+.band.center h2{max-width:24ch; margin:0 auto 22px;}
+.band.center p{max-width:62ch; margin:0 auto; color:var(--text-2);}
+.band.center p strong{color:var(--text); font-weight:500;}
+
+.cmp{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+.cmp-col{border:1px solid var(--border); border-radius:16px; overflow:hidden;}
+.cmp-col .head{padding:18px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:11px;}
+.cmp-col .head .badge{font-family:var(--font-mono); font-size:10px; letter-spacing:1.6px; text-transform:uppercase; color:var(--text-3);}
+.cmp-col .head .name{font-family:var(--font-display); font-size:18px; color:var(--text);}
+.cmp-col ul{list-style:none; margin:0; padding:10px 24px 22px;}
+.cmp-col li{padding:15px 0; border-bottom:1px solid var(--border); font-size:14.5px; color:var(--text-2); display:flex; gap:12px; align-items:flex-start;}
+.cmp-col li:last-child{border-bottom:0;}
+.cmp-col .mk{flex:none; margin-top:2px; color:var(--muted);}
+
+.chain{display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px;}
+.chain-node{flex:1 1 0; min-width:140px; border:1px solid var(--border); border-radius:12px; padding:20px 18px; background:linear-gradient(165deg, rgba(28,34,48,0.5), rgba(13,16,22,0.25)); position:relative;}
+.chain-node + .chain-node{margin-left:30px;}
+.chain-node + .chain-node::before{content:"\2192"; position:absolute; left:-24px; top:50%; transform:translateY(-50%); color:var(--gold); font-family:var(--font-mono); font-size:18px;}
+.chain-node .cn{font-family:var(--font-mono); font-size:10px; letter-spacing:1.2px; color:var(--gold); margin-bottom:10px;}
+.chain-node h3{font-size:16px; margin-bottom:7px;}
+.chain-node p{font-size:13px; color:var(--text-3); margin:0; line-height:1.45;}
+
+.ladder{display:flex; flex-direction:column; border:1px solid var(--border); border-radius:16px; overflow:hidden;}
+.rung{display:grid; grid-template-columns:64px 1fr; gap:20px; padding:22px 26px; border-bottom:1px solid var(--border); align-items:start; transition:background .2s ease;}
+.rung:last-child{border-bottom:0;}
+.rung:hover{background:var(--bg-2);}
+.rung .rn{font-family:var(--font-mono); font-size:13px; color:var(--gold); padding-top:3px;}
+.rung h3{font-size:17px; margin-bottom:6px;}
+.rung p{margin:0; font-size:14px; color:var(--text-2);}
+
+.timeline{position:relative; margin-top:10px; padding-left:34px;}
+.timeline::before{content:""; position:absolute; left:7px; top:6px; bottom:6px; width:1px; background:linear-gradient(180deg, var(--gold), var(--gold-deep) 70%, transparent);}
+.tl-item{position:relative; padding:0 0 40px 8px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{content:""; position:absolute; left:-34px; top:4px; width:15px; height:15px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); box-shadow:0 0 0 4px rgba(201,169,110,0.08);}
+.tl-year{font-family:var(--font-mono); font-size:12px; letter-spacing:1px; color:var(--gold); margin-bottom:8px;}
+.tl-item h3{font-size:21px; margin-bottom:10px;}
+.tl-item p{margin:0; max-width:62ch; color:var(--text-2);}
+
+.note{border:1px solid var(--border-2); border-left:2px solid var(--gold); border-radius:14px; padding:30px 34px; background:rgba(18,21,28,0.6); max-width:78ch;}
+.note .kicker{margin-bottom:16px;}
+.note p{font-size:16.5px; line-height:1.66; color:var(--text-2); margin:0;}
+.note p strong{color:var(--text); font-weight:500;}
+
+.pullquote{max-width:64ch; margin:40px auto 0; text-align:center; font-family:var(--font-display); font-size:clamp(22px,2.8vw,32px); line-height:1.32; color:var(--text); letter-spacing:-0.3px;}
+.pullquote .serif-accent{font-style:italic;}
+
+.contact{text-align:center;}
+.contact .inner{max-width:60ch; margin:0 auto;}
+.contact h2{margin:18px 0 18px;}
+.contact p{font-size:18px; color:var(--text-2); margin:0 0 30px;}
+.contact .actions{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+.disclaimer{font-size:12.5px; color:var(--muted-2); line-height:1.6; max-width:72ch; margin:30px auto 0;}
+
+footer{border-top:1px solid var(--border); padding:46px 0 54px; margin-top:30px;}
+.foot-inner{display:flex; justify-content:space-between; align-items:flex-start; gap:30px; flex-wrap:wrap;}
+.foot-brand .mark{font-family:var(--font-display); font-weight:600; font-size:21px; color:var(--gold); letter-spacing:0.5px;}
+.foot-brand .tag{font-family:var(--font-mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-3); margin-top:6px;}
+.foot-brand .line{font-size:13.5px; color:var(--muted-2); margin-top:14px; max-width:40ch;}
+.foot-meta{text-align:right;}
+.foot-meta .links{display:flex; gap:20px; justify-content:flex-end; margin-bottom:12px; flex-wrap:wrap;}
+.foot-meta .links a{color:var(--text-2); font-size:13.5px; cursor:pointer;}
+.foot-meta .links a:hover{color:var(--gold);}
+.foot-meta .copy{font-size:13px; color:var(--muted);}
+.foot-disc{margin-top:22px; padding-top:20px; border-top:1px solid var(--border);}
+
+/* capital control panel + asym */
+.asym{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+.asym .card{border:1px solid var(--border); border-radius:16px; padding:34px 32px; background:linear-gradient(165deg, rgba(28,34,48,0.45), rgba(13,16,22,0.2)); transition:border-color .25s ease, transform .25s ease;}
+.asym .card:hover{border-color:var(--gold-deep); transform:translateY(-4px);}
+.asym .card .tag{font-family:var(--font-mono); font-size:10px; letter-spacing:1.6px; text-transform:uppercase; color:var(--text-3); margin-bottom:16px; display:block;}
+.asym .card h3{font-size:24px; margin-bottom:13px;}
+.asym .card p{margin:0; color:var(--text-2); font-size:15px;}
+.asym .card .gold-line{color:var(--gold); font-size:14px; margin-top:18px; display:flex; align-items:center; gap:9px;}
+.asym .card .gold-line::before{content:""; width:16px; height:1px; background:var(--gold);}
+.ctrl-list{display:flex; flex-direction:column; gap:10px;}
+.ctrl{display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); border-radius:12px; padding:15px 17px; background:linear-gradient(165deg, rgba(28,34,48,0.5), rgba(13,16,22,0.25));}
+.ctrl .cl{font-family:var(--font-display); font-size:16px; color:var(--text);}
+.ctrl .state{font-family:var(--font-mono); font-size:11px; letter-spacing:0.5px; color:var(--green); display:inline-flex; align-items:center; gap:7px;}
+.ctrl .state::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green);}
+.ctrl.kill{border-color:var(--gold-deep); background:linear-gradient(165deg, rgba(201,169,110,0.1), rgba(13,16,22,0.2));}
+.ctrl.kill .cl{color:var(--gold-light);}
+.sw{width:34px; height:18px; border-radius:30px; background:var(--gold); position:relative; flex:none;}
+.sw::after{content:""; position:absolute; width:14px; height:14px; border-radius:50%; background:#15110a; top:2px; right:2px;}
+
+.spa .reveal{opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease;}
+.spa .reveal.in{opacity:1; transform:none;}
+
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr; gap:40px;}
+  .hero-visual{order:-1; max-width:420px;}
+  .trio{grid-template-columns:1fr;}
+  .pillars{grid-template-columns:1fr 1fr;}
+  .asym{grid-template-columns:1fr;}
+  .chain{flex-direction:column;}
+  .chain-node{min-width:0;}
+  .chain-node + .chain-node{margin-left:0; margin-top:28px;}
+  .chain-node + .chain-node::before{content:"\2193"; left:50%; top:-23px; transform:translateX(-50%);}
+}
+@media(max-width:640px){
+  .nav-links{display:none;}
+  .cmp{grid-template-columns:1fr;}
+  .pillars{grid-template-columns:1fr;}
+  .rung{grid-template-columns:1fr; gap:6px;}
+  .foot-inner{flex-direction:column; align-items:flex-start;}
+  .foot-meta{text-align:left;} .foot-meta .links{justify-content:flex-start;}
+  .hero .lead{max-width:none;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+  .spa .reveal{opacity:1; transform:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#about" aria-label="VFE home"><span class="mark">VFE</span><span class="tag">the Glass Box</span></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#about" data-nav>About</a>
+      <a href="#exchange" data-nav>The Exchange</a>
+      <a href="#glass-box" data-nav>The Glass Box</a>
+      <a href="#capital" data-nav>Capital Partners</a>
+    </nav>
+    <div class="nav-cta"><a class="btn btn-gold" href="#about-contact">Get in touch</a></div>
   </div>
+</header>
+
+<main>
+
+<!-- ============ VIEW: ABOUT ============ -->
+<div class="view" id="about">
+  <section class="hero">
+    <div class="wrap hero-center">
+      <span class="status-pill"><span class="dot"></span>In active build &middot; 2026</span>
+      <h1>Freight factoring is about to have its <span class="serif-accent">exchange moment.</span></h1>
+      <p class="lead">A century ago, stock trading ran on paper certificates, opaque dealing, and outright scams. Disclosure, central clearing, and screens turned it into something you could trust. VFE is that turn for freight factoring: automated, verified at the source, and clear all the way down.</p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#about-what">What we are <span class="arrow">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#exchange">Why now: the parallel</a>
+      </div>
+    </div>
+  </section>
+  <div class="wrap"><div class="divider"></div></div>
+  <section id="about-what">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">What we are</span><h2>Automated factoring, the first of its kind.</h2></div>
+      <div class="prose reveal">
+        <p>VFE is a software-native freight-factoring company. We advance cash to trucking companies against their freight invoices, and we run the entire operation in software: underwriting, source-verification, collections, cash control, and covenant monitoring.</p>
+        <p>Every interaction is verified at the source, and every advance is clear, auditable, and traceable. We can show who we funded, why we funded them, and the proof behind the why, down to the original source document. We begin in freight, but the platform is software-first rather than freight-specific, and the same machinery is built to extend to other receivables over time.</p>
+        <p><a href="#glass-box" style="color:var(--gold);">Go inside the glass box <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </div>
+  </section>
+  <section id="about-pillars">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">Why it works</span><h2>Run a factor as software, and four things fall out.</h2></div>
+      <div class="pillars reveal">
+        <div class="pillar"><div class="n">01</div><h3>Scale</h3><p>Growth is a function of capital, not headcount. The software does the verification, monitoring, and collections, so the book grows as fast as funding allows, with no back office to add.</p></div>
+        <div class="pillar"><div class="n">02</div><h3>Margin</h3><p>Low operating cost, and verification enforced in code rather than by tired operators. More of the yield survives as margin, and that margin is a deeper cushion against loss.</p></div>
+        <div class="pillar"><div class="n">03</div><h3>Auditability</h3><p>Everything is granular and traceable in real time. For every dollar funded: what, for whom, on what terms, and why, down to the original source document. Nothing to fudge.</p></div>
+        <div class="pillar"><div class="n">04</div><h3>Enforcement</h3><p>Control is built into the operation, not bolted on as a report. Eligibility and covenants are enforced at the machine level, live, on every purchase. An ineligible asset cannot enter the book.</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="about-parallel">
+    <div class="wrap">
+      <div class="band center reveal">
+        <span class="kicker">Why now</span>
+        <h2>We have seen this story before.</h2>
+        <p>Equities went from paper, opacity, and bucket-shop fraud to disclosure, central clearing, and electronic transparency. Freight factoring is still in its paper era: faxed documents, trust-me underwriting, and fraud that hides in the gaps. <strong>VFE is the digitization, verification, and transparency moment for factoring.</strong></p>
+        <div style="margin-top:30px;"><a class="btn btn-ghost" href="#exchange">Read the full parallel <span class="arrow">&rarr;</span></a></div>
+      </div>
+    </div>
+  </section>
+  <section id="about-open" style="padding-top:0;">
+    <div class="wrap">
+      <div class="note reveal"><span class="kicker">Built in the open</span><p>VFE is early by design. The numbers and case studies that usually fill a page like this will come from <strong>real performance, not marketing.</strong> Until they do, we would rather show you the architecture than sell you a promise. If that sounds like the kind of firm you want to work with, we should talk.</p></div>
+    </div>
+  </section>
+  <section id="about-contact" class="contact">
+    <div class="wrap inner">
+      <span class="kicker center">Get in touch</span>
+      <h2>Let's talk.</h2>
+      <p>Carrier, broker, or capital partner, we would like to hear from you.</p>
+      <div class="actions">
+        <!-- TODO: set hello@example.com to your VFE-brand email before publishing -->
+        <a class="btn btn-gold" href="mailto:hello@example.com">Email VFE <span class="arrow">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#capital">For capital partners</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ VIEW: THE EXCHANGE ============ -->
+<div class="view" id="exchange">
+  <section class="hero">
+    <div class="wrap hero-center">
+      <span class="kicker center" style="margin-bottom:24px;">The historical parallel</span>
+      <h1>From paper to <span class="serif-accent">glass.</span></h1>
+      <p class="lead">The stock market was once a paper business: certificates locked in vaults, trades settled by messenger, and a trust-me opacity that bred fraud. Over a century it became digital, centralized, and transparent. Freight factoring is making the same journey now, and VFE is building the glass box.</p>
+    </div>
+  </section>
+  <div class="wrap"><div class="divider"></div></div>
+  <section id="exchange-timeline">
+    <div class="wrap narrow">
+      <div class="section-head reveal"><span class="kicker">How the markets got here</span><h2>A century of paper becoming proof.</h2><p class="lead">Five moments turned equity trading from a handshake-and-paper business into the real-time, verified, centrally cleared market we take for granted.</p></div>
+      <div class="timeline reveal">
+        <div class="tl-item"><div class="tl-year">1792</div><h3>A market built on paper and trust</h3><p>Trading began under a buttonwood tree as a gentlemen's agreement. Ownership lived on paper certificates, trades were settled by hand, and the whole thing ran on reputation. It worked because it was small.</p></div>
+        <div class="tl-item"><div class="tl-year">1880s to 1920s</div><h3>The bucket shops</h3><p>Speculation parlors took the real ticker feed and let people bet on price moves without ever buying or owning a thing. No real trades, no delivery, no transparency, and plenty of manipulation. Cited as a driver of early crashes, they were outlawed state by state and effectively gone by the 1920s. Opacity invited fraud, and the fraud forced a reckoning.</p></div>
+        <div class="tl-item"><div class="tl-year">1934</div><h3>Disclosure becomes the law</h3><p>After the 1929 crash, the Securities Exchange Act created the Securities and Exchange Commission and made disclosure mandatory. The market would now run on verifiable information rather than reputation. Trust was no longer enough; you had to be able to show your work.</p></div>
+        <div class="tl-item"><div class="tl-year">Late 1960s</div><h3>The paperwork crisis</h3><p>Trading volume buried Wall Street in paper. Every trade still meant physically moving a certificate, and settlement backlogs grew so severe that exchanges shortened their hours and closed regularly just to dig out. Paper had hit its limit. The system that ran on it could not scale.</p></div>
+        <div class="tl-item"><div class="tl-year">1971 to 1973</div><h3>Screens, and a single source of truth</h3><p>NASDAQ opened in 1971 as the first electronic stock market, replacing the trading floor with quotes on a screen. In 1973 the Depository Trust Company put the certificates into one central vault and moved ownership by ledger entry instead of by hand. One verified record replaced a mountain of paper, and the market could finally scale, clear, and be checked.</p></div>
+      </div>
+      <p class="pullquote reveal">Paper and trust did not just get faster. They were replaced by <span class="serif-accent">disclosure, a central source of truth, and proof you could verify.</span></p>
+    </div>
+  </section>
+  <section id="exchange-rhyme">
+    <div class="wrap">
+      <div class="section-head center reveal"><span class="kicker center">History rhymes</span><h2>Freight factoring is where the markets used to be.</h2><p class="lead">Read the two columns. They are the same business, a century apart.</p></div>
+      <div class="cmp reveal">
+        <div class="cmp-col">
+          <div class="head"><span class="badge">Equities, circa 1900</span><span class="name">Paper and trust</span></div>
+          <ul>
+            <li><span class="mk">&middot;</span>Ownership on paper certificates, moved by hand.</li>
+            <li><span class="mk">&middot;</span>Settlement by messenger, slow and error-prone.</li>
+            <li><span class="mk">&middot;</span>Bucket shops let people bet on things they never owned.</li>
+            <li><span class="mk">&middot;</span>Verified by reputation. Trust me.</li>
+            <li><span class="mk">&middot;</span>Fraud hid in the paperwork.</li>
+          </ul>
+        </div>
+        <div class="cmp-col">
+          <div class="head"><span class="badge">Freight factoring, today</span><span class="name">Still on paper</span></div>
+          <ul>
+            <li><span class="mk">&middot;</span>Invoices, bills of lading, and proofs of delivery, faxed and keyed by hand.</li>
+            <li><span class="mk">&middot;</span>Verification by phone call and gut feel.</li>
+            <li><span class="mk">&middot;</span>Double-brokering and fake invoices, betting against loads that were never really theirs.</li>
+            <li><span class="mk">&middot;</span>Underwritten by reputation. Trust me.</li>
+            <li><span class="mk">&middot;</span>Fraud hides in the gaps between systems.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="exchange-resolution" style="padding-top:0;">
+    <div class="wrap">
+      <div class="band center reveal">
+        <span class="kicker center">The resolution</span>
+        <h2>VFE brings all three forces to factoring at once.</h2>
+        <p>The same three things that turned equities from a paper-and-trust business into a real market are what VFE is built on: <strong>disclosure</strong>, so a funder sees the whole book live instead of a report we wrote; a <strong>single verified source of truth</strong>, where every claim traces to an unfakeable document and every decision to the rule that made it; and <strong>enforcement in code</strong>, so eligibility and controls are checked on every transaction, not sampled once a year. That is the glass box.</p>
+        <div style="margin-top:30px;"><a class="btn btn-gold" href="#glass-box">See the glass box <span class="arrow">&rarr;</span></a></div>
+      </div>
+    </div>
+  </section>
+  <section id="exchange-contact" class="contact" style="padding-top:0;">
+    <div class="wrap inner">
+      <span class="kicker center">Get in touch</span>
+      <h2>Want the long version?</h2>
+      <p>We are happy to talk through where factoring is headed, and where VFE fits.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="mailto:hello@example.com">Email VFE <span class="arrow">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#capital">For capital partners</a>
+      </div>
+      <p class="disclaimer">Historical milestones drawn from public records, including the Library of Congress business-history guides, the SEC historical archive, and the Depository Trust and Clearing Corporation's published history. Dates are approximate where an era, not a single day, marks the change.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ============ VIEW: THE GLASS BOX ============ -->
+<div class="view" id="glass-box">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="kicker" style="margin-bottom:22px;">The Glass Box</span>
+        <h1><span class="light">Most factoring is a black box.</span> <span class="serif-accent">Ours is glass.</span></h1>
+        <p class="lead">A factor, like a lender, runs on managing what it cannot see. VFE deletes the blindness. Every decision is verified at the source, recorded, and replayable, so the reasoning is always as available as the result.</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#gb-sot">How it works <span class="arrow">&rarr;</span></a>
+          <a class="btn btn-ghost" href="#capital">For capital partners</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="box-frame">
+          <span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+          <svg class="box-svg" viewBox="0 0 480 470" role="img" aria-label="An abstract glass box rendered in gold hairlines">
+            <defs>
+              <linearGradient id="ft" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9a96e" stop-opacity="0.16"/><stop offset="1" stop-color="#c9a96e" stop-opacity="0.03"/></linearGradient>
+              <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.05"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.01"/></linearGradient>
+              <linearGradient id="fr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9a96e" stop-opacity="0.09"/><stop offset="1" stop-color="#c9a96e" stop-opacity="0.015"/></linearGradient>
+              <radialGradient id="gl" cx="50%" cy="42%" r="55%"><stop offset="0" stop-color="#c9a96e" stop-opacity="0.22"/><stop offset="1" stop-color="#c9a96e" stop-opacity="0"/></radialGradient>
+            </defs>
+            <ellipse cx="240" cy="225" rx="190" ry="170" fill="url(#gl)"/>
+            <g class="cube" fill="none" stroke="#c9a96e" stroke-linejoin="round">
+              <polygon points="240,70 380,150 240,230 100,150" fill="url(#ft)" stroke-width="1.4"/>
+              <polygon points="100,150 240,230 240,395 100,315" fill="url(#fl)" stroke-width="1.4"/>
+              <polygon points="380,150 240,230 240,395 380,315" fill="url(#fr)" stroke-width="1.4"/>
+              <g stroke-width="1" opacity="0.5"><line x1="120" y1="200" x2="222" y2="259"/><line x1="120" y1="232" x2="222" y2="291"/><line x1="120" y1="264" x2="222" y2="323"/></g>
+              <circle cx="240" cy="230" r="6" fill="#c9a96e" stroke="none"/><circle cx="240" cy="230" r="15" stroke-width="1" opacity="0.55"/>
+            </g>
+          </svg>
+          <div class="box-caption"><span class="label">The principle</span><span class="val">Don't trust. Verify.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap"><div class="divider"></div></div>
+  <section id="gb-sot">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">The source of truth</span><h2>Every number traces back to something real.</h2><p class="lead">In most factoring, the data is a report someone typed. In VFE, every figure sits on a chain that runs from the dollar funded all the way down to the original document, and back up to the decision that approved it. Read it in either direction. Nothing dead-ends in an assertion.</p></div>
+      <div class="chain reveal">
+        <div class="chain-node"><div class="cn">01</div><h3>Claim</h3><p>A statement the book makes. This receivable is real and fundable.</p></div>
+        <div class="chain-node"><div class="cn">02</div><h3>Exhibit</h3><p>The original document behind it: the bill of lading, the rate confirmation, the proof of delivery.</p></div>
+        <div class="chain-node"><div class="cn">03</div><h3>Evidence</h3><p>What we verified from that exhibit, read at the source, not from a retyped summary.</p></div>
+        <div class="chain-node"><div class="cn">04</div><h3>Rule</h3><p>The check that ran against the evidence, applied the same way every time.</p></div>
+        <div class="chain-node"><div class="cn">05</div><h3>Doctrine</h3><p>The principle the rule comes from, so the reasoning is never improvised.</p></div>
+        <div class="chain-node"><div class="cn">06</div><h3>Approver</h3><p>What signed off, on the record, so the decision has an owner.</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="gb-verification">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">Verification</span><h2>We check the things a phone call cannot.</h2><p class="lead">Verification is not one lookup. It is a stack, and each layer catches what the one above it would miss.</p></div>
+      <div class="ladder reveal">
+        <div class="rung"><div class="rn">01</div><div><h3>Identity</h3><p>Is this carrier real, properly authorized, and who they say they are?</p></div></div>
+        <div class="rung"><div class="rn">02</div><div><h3>Operational reality</h3><p>Does their pattern of activity look like a genuine, running business rather than a shell?</p></div></div>
+        <div class="rung"><div class="rn">03</div><div><h3>Transaction reality</h3><p>Did this load actually move? Do the documents hold together, and are they authentic rather than altered or reused?</p></div></div>
+        <div class="rung"><div class="rn">04</div><div><h3>The network</h3><p>What does the wider network reveal that no single factor can see on its own: double-brokering, address rings, repeat bad actors? This is the layer that gets stronger with every transaction.</p></div></div>
+        <div class="rung"><div class="rn">05</div><div><h3>Synthesis</h3><p>Every signal resolved into one confidence read, weakest-link aware and cross-checked, not an average that hides a red flag.</p></div></div>
+        <div class="rung"><div class="rn">06</div><div><h3>Continuous monitoring</h3><p>Verification does not stop at funding. The book is watched and re-checked as conditions change.</p></div></div>
+      </div>
+    </div>
+  </section>
+  <section id="gb-decisions">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">Decisions</span><h2>Decided by rules, not by mood.</h2></div>
+      <div class="trio reveal">
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h10"/></svg><h3>Consistent</h3><p>The same rules, applied the same way every time. No drift, no mood, no exception argued in a hallway.</p></div>
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg><h3>Replayable</h3><p>Any decision can be re-run to the same answer, traced to the rule and the document that produced it.</p></div>
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg><h3>Enforced in code</h3><p>An ineligible asset cannot enter the book, and a funding that would breach a limit does not happen.</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="gb-record" style="padding-top:0;">
+    <div class="wrap">
+      <div class="band center reveal">
+        <span class="kicker center">A record built to be checked</span>
+        <h2>The point is not that we show you the numbers. It is that you can verify them yourself.</h2>
+        <p>Every meaningful event is sealed and recorded before it is allowed to count, in an append-only chain where any later tampering becomes detectable. So the book is not a story we tell. It is a record anyone with access can audit, line by line, down to the exhibit. <strong>Don't trust. Verify.</strong></p>
+      </div>
+    </div>
+  </section>
+  <section id="gb-posture" style="padding-top:0;">
+    <div class="wrap">
+      <div class="note reveal"><span class="kicker">Where we stand</span><p>VFE is pre-launch. Live testing and an independent performance-calibration milestone begin this summer, which is what turns the architecture on this page from a design into a measured track record. <strong>Until then, every forward-looking figure is illustrative.</strong> We would rather show you how the box is built than overstate what it has done.</p></div>
+    </div>
+  </section>
+  <section id="gb-contact" class="contact">
+    <div class="wrap inner">
+      <span class="kicker center">See it for yourself</span>
+      <h2>Look inside.</h2>
+      <p>Carriers, brokers, and capital partners each get their own view of the box. Tell us which you are.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="mailto:hello@example.com">Email VFE <span class="arrow">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#capital">For capital partners</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ VIEW: CAPITAL PARTNERS ============ -->
+<div class="view" id="capital">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="status-pill"><span class="dot"></span>Pre-launch &middot; first institutional facility</span>
+        <h1><span class="light">Don't trust.</span> <span class="serif-accent">Verify.</span></h1>
+        <p class="lead">Every term in a credit facility, the advance rate, the reserves, the covenants, the field audits, exists to manage one thing: the lender's blindness. VFE deletes the blindness, and hands you the controls.</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#capital-contact">Request access <span class="arrow">&rarr;</span></a>
+          <a class="btn btn-ghost" href="#cap-thesis">Read the thesis</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="box-frame">
+          <span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+          <div class="frame-label"><span>Lender controls</span><span class="live"><span class="d"></span>Live</span></div>
+          <div class="ctrl-list">
+            <div class="ctrl"><span class="cl">Live book view</span><span class="state">Open</span></div>
+            <div class="ctrl"><span class="cl">Eligibility gate</span><span class="state">Enforced</span></div>
+            <div class="ctrl"><span class="cl">Covenant monitor</span><span class="state">Live</span></div>
+            <div class="ctrl kill"><span class="cl">Kill switch</span><span class="sw"></span></div>
+          </div>
+          <div class="box-caption"><span class="label">Held by</span><span class="val">The lender</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap"><div class="divider"></div></div>
+  <section id="cap-thesis">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">The asymmetry</span><h2>You price for two things. We remove both.</h2><p class="lead">A facility manages what a lender cannot see and cannot escape. Your premium pays for exactly those two risks. The Glass Box takes them off the table.</p></div>
+      <div class="asym reveal">
+        <div class="card"><span class="tag">What you can't see</span><h3>Now you see everything.</h3><p>The haircuts, reserves, and field exams are the cost of not seeing the book in real time. VFE runs in verified software, so you do not get a report we wrote. You share one live view of the book, down to the individual invoice and the reason it was funded, and you even see what no single factor can on its own: patterns of fraud and default across the wider network.</p><span class="gold-line">Real-time, source-verified visibility.</span></div>
+        <div class="card"><span class="tag">What you can't escape</span><h3>Now you can leave.</h3><p>The rest of the premium pays for being trapped in a book that turns before you can act. VFE's book is short, self-liquidating, and stoppable, with eligibility and cash control enforced in code rather than promised on paper.</p><span class="gold-line">A kill switch you hold.</span></div>
+      </div>
+      <p class="pullquote reveal">We replace trust me for a year with <span class="serif-accent">verify me daily, leave anytime.</span></p>
+    </div>
+  </section>
+  <section id="cap-controls">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">What a partner holds</span><h2>Real controls, enforced in code.</h2><p class="lead">Not promises in a credit agreement. Live instruments you operate.</p></div>
+      <div class="trio reveal">
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg><h3>One live view of the book</h3><p>Self-service, loan by loan: who we funded, why, and the proof behind it, down to the source document. No closing day, no waiting on a report.</p></div>
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg><h3>Eligibility gated at origination</h3><p>Every receivable is checked the moment it is funded, not sampled in a field exam twice a year. An ineligible asset never enters the base.</p></div>
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg><h3>Covenants you author, enforced live</h3><p>Your rules, watched continuously and tightening before a breach rather than after, never left to an operator's discretion.</p></div>
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg><h3>Replayable decisions</h3><p>Re-run any decision to the same answer, traced to the rule and the document that produced it. Verify the population, do not sample it.</p></div>
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h10"/></svg><h3>Cash control</h3><p>Funds move through a lockbox and a defined waterfall, on rules you set, with the flow visible on the same live ledger as the book.</p></div>
+        <div class="feature"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h3>A kill switch you hold</h3><p>Pause, freeze, or reposition exposure in real time. The brake sits with the people funding the book, not with us.</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="cap-posture" style="padding-top:0;">
+    <div class="wrap">
+      <div class="note reveal"><span class="kicker">Where we stand</span><p>VFE is pre-launch. Live testing and an independent performance-calibration milestone begin this summer, which converts our illustrative figures into underwritable ones. Until then, <strong>every forward-looking number is illustrative.</strong> We would rather you underwrite the controls and the operations than a story. The full data room opens under a mutual NDA.</p></div>
+    </div>
+  </section>
+  <section id="cap-audience">
+    <div class="wrap">
+      <div class="band center reveal">
+        <span class="kicker center">Who this is for</span>
+        <h2>If you fund originators against data and control, this was built for you.</h2>
+        <p>Structured-credit and fintech-warehouse funds. Private-credit and forward-flow lenders. Asset-based lenders and specialty finance. Bank warehouse desks. <strong>The Glass Box was built for the way you already underwrite,</strong> and it gives you more to underwrite on than any opaque counterparty can.</p>
+      </div>
+    </div>
+  </section>
+  <section id="capital-contact" class="contact">
+    <div class="wrap inner">
+      <span class="kicker center">Request access</span>
+      <h2>See the book.</h2>
+      <p>The full data room opens under a mutual NDA. The first step is a short conversation.</p>
+      <div class="actions">
+        <!-- TODO: set capital@example.com to your VFE-brand email before publishing -->
+        <a class="btn btn-gold" href="mailto:capital@example.com?subject=VFE%20Capital%20Partners%3A%20access%20request">Request access <span class="arrow">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#about">Back to home</a>
+      </div>
+      <p class="disclaimer">Illustrative and pre-launch. Not an offer, a commitment, or a solicitation. Every forward-looking figure is illustrative until VFE's independent performance-calibration milestone.</p>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <div class="mark">VFE</div>
+        <div class="tag">the Glass Box</div>
+        <div class="line">A transportation factoring firm built around transparency.</div>
+      </div>
+      <div class="foot-meta">
+        <div class="links">
+          <a href="#about" data-nav>About</a>
+          <a href="#exchange" data-nav>The Exchange</a>
+          <a href="#glass-box" data-nav>The Glass Box</a>
+          <a href="#capital" data-nav>Capital Partners</a>
+        </div>
+        <div class="copy">&copy; 2026 VFE. All rights reserved.</div>
+      </div>
+    </div>
+    <div class="foot-disc">
+      <p class="disclaimer" style="margin-left:0;">For prospective partners. Illustrative and pre-launch. This page is not an offer to sell or a solicitation of an offer to buy any security, and not a commitment to lend or borrow. Every forward-looking figure is illustrative until VFE's independent performance-calibration milestone.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var body = document.body;
+  body.classList.add('spa'); // enable single-page view switching; without this, all views stack (no-JS fallback)
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var navlinks = Array.prototype.slice.call(document.querySelectorAll('[data-nav]'));
+  function revealIn(view){
+    var rs = view.querySelectorAll('.reveal');
+    requestAnimationFrame(function(){ rs.forEach(function(e){ e.classList.add('in'); }); });
+  }
+  function activate(viewId, targetId){
+    var found = false;
+    views.forEach(function(v){
+      var on = (v.id === viewId);
+      v.classList.toggle('active', on);
+      if(on){ found = true; revealIn(v); }
+    });
+    if(!found){ activate('about', null); return; }
+    navlinks.forEach(function(a){ a.classList.toggle('here', a.getAttribute('href') === '#'+viewId); });
+    if(targetId && targetId !== viewId){
+      var el = document.getElementById(targetId);
+      window.scrollTo(0,0);
+      if(el){ requestAnimationFrame(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); }); }
+    } else {
+      window.scrollTo(0,0);
+    }
+  }
+  function route(hash){
+    var id = (hash || '').replace('#','');
+    var el = id ? document.getElementById(id) : null;
+    if(!el){ activate('about', null); return; }
+    var view = el.classList.contains('view') ? el : el.closest('.view');
+    activate(view ? view.id : 'about', view ? id : null);
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if(!a) return;
+    var href = a.getAttribute('href');
+    if(!href || href.length < 2) return;
+    e.preventDefault();
+    if(location.hash !== href){ history.pushState(null, '', href); }
+    route(href);
+  });
+  window.addEventListener('popstate', function(){ route(location.hash); });
+  route(location.hash);
+})();
+</script>
 </body>
 </html>
