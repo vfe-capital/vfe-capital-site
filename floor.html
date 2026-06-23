@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<!-- THE VFE EXCHANGE - the floor.  Model: the immersive Exchange is the landing;
+     an always-visible "Enter the standard site" hands off to the professional site.
+     Camera is GUIDED: click a room and the camera glides to a framed vantage (gentle
+     clamped look only, no getting lost facing the floor). Every room is built out for
+     real: the Big Board (market history), the Glass Box (how we verify), the Carriers'
+     Post (get paid fast), the Capital Post (the live book and the controls), and the
+     Vault (the sealed, append-only record).
+     Self-contained. Brand tokens match the standard site. Public-safe (illustrative). -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The VFE Exchange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{ --gold:#c9a96e; --gold-light:#d4bb88; --gold-deep:#8a7548; --ink:#090b0f; --ink-2:#0d1016; --cream:#ece8df;
+  --text-2:#9aa0ad; --text-3:#6a7180; --border:#2a3142; --green:#6fb88a; --amber:#d6a85f; --red:#d77a6a;
+  --fd:"Fraunces",Georgia,serif; --fb:"Geist",ui-sans-serif,system-ui,sans-serif; --fm:"Geist Mono",ui-monospace,Menlo,monospace; }
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0; height:100%; background:var(--ink); color:var(--cream); font-family:var(--fb); overflow:hidden; -webkit-font-smoothing:antialiased;}
+#app{position:fixed; inset:0; z-index:5;}
+#app canvas{display:block; cursor:grab;} #app.drag canvas{cursor:grabbing;}
+
+.plate{position:fixed; top:0; left:0; right:0; z-index:30; display:flex; justify-content:space-between; align-items:center; padding:15px clamp(16px,4vw,38px);}
+.plate .mk{font-family:var(--fd); font-weight:600; font-size:20px; letter-spacing:0.5px; color:var(--gold); pointer-events:none;}
+.skip{font-family:var(--fm); font-size:10.5px; letter-spacing:1.6px; text-transform:uppercase; color:var(--cream); text-decoration:none; border:1px solid var(--border); border-radius:30px; padding:9px 15px; background:rgba(13,16,22,0.7); transition:color .2s,border-color .2s;}
+.skip:hover{color:var(--gold); border-color:var(--gold-deep);}
+
+.hint{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:25; font-family:var(--fm); font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:var(--text-2); transition:opacity .6s; pointer-events:none; text-align:center;}
+.controls{position:fixed; right:clamp(14px,3vw,28px); bottom:clamp(14px,3vw,28px); z-index:25;}
+.btn{cursor:pointer; font-family:var(--fm); font-size:11px; letter-spacing:1.2px; text-transform:uppercase; color:var(--cream); background:rgba(13,16,22,0.8); border:1px solid var(--border); border-radius:30px; padding:11px 17px; transition:color .2s,border-color .2s;}
+.btn:hover{color:var(--gold); border-color:var(--gold-deep);}
+
+/* ===== shared EXHIBIT overlay (every room is built out) ===== */
+.exb{position:fixed; inset:0; z-index:50; background:radial-gradient(80% 70% at 70% 20%, rgba(28,34,48,0.5), rgba(6,8,11,0.92)); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .5s ease; overflow:auto;}
+.exb.open{opacity:1; pointer-events:auto;}
+.exwrap{max-width:1180px; margin:0 auto; padding:clamp(64px,9vh,90px) clamp(20px,5vw,56px) 60px; min-height:100%; display:flex; flex-direction:column;}
+.exhead{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:30px;}
+.exhead .k{font-family:var(--fm); font-size:11px; letter-spacing:2.4px; text-transform:uppercase; color:var(--gold); margin-bottom:14px; display:flex; align-items:center; gap:11px;}
+.exhead .k::before{content:""; width:24px; height:1px; background:var(--gold);}
+.exhead h1{font-family:var(--fd); font-weight:500; font-size:clamp(30px,5vw,56px); line-height:1; letter-spacing:-1px; color:var(--cream); margin:0;}
+.exhead h1 em{font-style:italic; color:var(--gold);}
+.exhead .lead{font-size:clamp(15px,1.6vw,18px); color:var(--text-2); margin:16px 0 0; max-width:54ch; line-height:1.55;}
+.exb .back{position:fixed; top:14px; right:clamp(16px,4vw,38px); z-index:55;}
+
+.exfoot{margin-top:26px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; border-top:1px solid var(--border); padding-top:22px;}
+.exfoot .cta{display:inline-flex; align-items:center; gap:9px; font-family:var(--fb); font-size:14.5px; font-weight:500; color:#15110a; background:var(--gold); border-radius:30px; padding:13px 22px; text-decoration:none; transition:background .2s,transform .18s;}
+.exfoot .cta:hover{background:var(--gold-light); transform:translateY(-2px);}
+.exfoot .note{font-family:var(--fm); font-size:11px; color:var(--text-3); line-height:1.55; max-width:48ch;}
+.disc{font-size:11px; color:var(--text-3); margin-top:18px; line-height:1.5;}
+
+/* generic card grid used by several rooms */
+.cards{display:grid; gap:14px;}
+.cards.g2{grid-template-columns:1fr 1fr;}
+.cards.g3{grid-template-columns:1fr 1fr 1fr;}
+.card{border:1px solid var(--border); border-radius:12px; padding:18px 19px; background:linear-gradient(165deg,rgba(28,34,48,0.5),rgba(13,16,22,0.35));}
+.card .cn{font-family:var(--fm); font-size:11px; letter-spacing:1.6px; color:var(--gold); margin-bottom:9px;}
+.card h3{font-family:var(--fd); font-weight:500; font-size:19px; color:var(--cream); margin:0 0 7px;}
+.card p{font-size:13.5px; line-height:1.55; color:var(--text-2); margin:0;}
+
+/* ===== THE BIG BOARD (history) ===== */
+.tl{display:grid; gap:0; border-left:1px solid var(--border); margin-left:6px;}
+.tl .ev{position:relative; padding:0 0 26px 26px;}
+.tl .ev::before{content:""; position:absolute; left:-5px; top:5px; width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold);}
+.tl .ev .yr{font-family:var(--fm); font-size:12px; letter-spacing:1.4px; color:var(--gold); margin-bottom:5px;}
+.tl .ev h3{font-family:var(--fd); font-weight:500; font-size:20px; color:var(--cream); margin:0 0 6px;}
+.tl .ev p{font-size:13.5px; line-height:1.55; color:var(--text-2); margin:0; max-width:62ch;}
+.pull{font-family:var(--fd); font-size:clamp(18px,2.3vw,24px); line-height:1.4; color:var(--cream); margin:8px 0 0;}
+.pull em{font-style:italic; color:var(--gold);}
+
+/* ===== THE GLASS BOX (verify) ===== */
+.chain{display:grid; grid-template-columns:repeat(6,1fr); gap:10px;}
+.chain .node{border:1px solid var(--border); border-radius:11px; padding:14px 13px; background:linear-gradient(165deg,rgba(28,34,48,0.5),rgba(13,16,22,0.3)); position:relative;}
+.chain .node .cn{font-family:var(--fm); font-size:10.5px; color:var(--gold); margin-bottom:7px;}
+.chain .node h3{font-family:var(--fd); font-weight:500; font-size:16px; color:var(--cream); margin:0 0 6px;}
+.chain .node p{font-size:11.5px; line-height:1.5; color:var(--text-2); margin:0;}
+.chain .node .arr{position:absolute; right:-8px; top:50%; transform:translateY(-50%); color:var(--gold-deep); font-size:13px; z-index:2;}
+.ladder{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:8px;}
+.ladder .rung{display:flex; gap:12px; border:1px solid var(--border); border-radius:11px; padding:14px 15px; background:linear-gradient(165deg,rgba(28,34,48,0.45),rgba(13,16,22,0.3));}
+.ladder .rung .rn{font-family:var(--fm); font-size:12px; color:var(--gold); flex:none;}
+.ladder .rung h3{font-family:var(--fd); font-weight:500; font-size:15.5px; color:var(--cream); margin:0 0 5px;}
+.ladder .rung p{font-size:12px; line-height:1.5; color:var(--text-2); margin:0;}
+.subhead{font-family:var(--fm); font-size:10.5px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin:30px 0 14px;}
+
+/* ===== CARRIERS' POST (get paid) ===== */
+.flow{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:10px; align-items:stretch;}
+.flow .step{border:1px solid var(--border); border-radius:12px; padding:18px 18px; background:linear-gradient(165deg,rgba(28,34,48,0.5),rgba(13,16,22,0.3));}
+.flow .step .sn{font-family:var(--fm); font-size:11px; letter-spacing:1.4px; color:var(--gold); margin-bottom:8px;}
+.flow .step h3{font-family:var(--fd); font-weight:500; font-size:18px; color:var(--cream); margin:0 0 6px;}
+.flow .step p{font-size:12.5px; line-height:1.5; color:var(--text-2); margin:0;}
+.flow .ar{align-self:center; color:var(--gold-deep); font-family:var(--fm); font-size:16px;}
+.upbox{border:1px solid var(--border); border-radius:14px; overflow:hidden; background:linear-gradient(160deg,rgba(28,34,48,0.6),rgba(13,16,22,0.5)); margin-top:18px;}
+.upbox .uh{display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--border);}
+.upbox .uh .tt{font-family:var(--fm); font-size:10.5px; letter-spacing:1.8px; text-transform:uppercase; color:var(--text-2);}
+.upbox .ub{padding:18px;}
+.docrow{display:grid; grid-template-columns:1fr 1.4fr 0.9fr; gap:10px; align-items:center; padding:11px 4px; border-bottom:1px solid rgba(34,42,57,0.6); font-size:12.5px; color:var(--cream);}
+.docrow:last-child{border-bottom:none;}
+.docrow .dn{font-family:var(--fm); font-size:12px; color:var(--text-2);}
+.docrow .ds{justify-self:end; display:inline-flex; gap:6px; align-items:center; font-family:var(--fm); font-size:9.5px; letter-spacing:0.8px; text-transform:uppercase; padding:4px 9px; border-radius:20px; border:1px solid var(--border);}
+.docrow .ds .d{width:5px;height:5px;border-radius:50%;}
+.docrow .ds.vfy{color:var(--amber); border-color:rgba(214,168,95,0.4);} .docrow .ds.vfy .d{background:var(--amber); animation:pulse 1s infinite;}
+.docrow .ds.ok{color:var(--green); border-color:rgba(111,184,138,0.45); background:rgba(111,184,138,0.07);} .docrow .ds.ok .d{background:var(--green);}
+.upfoot{margin-top:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+.upfoot .fund{font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-2);}
+.upfoot .fund b{color:var(--green);}
+.upbtn{cursor:pointer; font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#15110a; background:var(--gold); border:none; border-radius:24px; padding:10px 18px; transition:background .2s;}
+.upbtn:hover{background:var(--gold-light);} .upbtn:disabled{opacity:.45; cursor:default;}
+
+/* ===== THE VAULT (audit chain) ===== */
+.chainview{border:1px solid var(--border); border-radius:14px; overflow:hidden; background:linear-gradient(160deg,rgba(28,34,48,0.6),rgba(13,16,22,0.5));}
+.chainview .vh{display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--border);}
+.chainview .vh .tt{font-family:var(--fm); font-size:10.5px; letter-spacing:1.8px; text-transform:uppercase; color:var(--text-2);}
+.chainview .vh .seal{font-family:var(--fm); font-size:10.5px; letter-spacing:1.2px; text-transform:uppercase; color:var(--green); display:inline-flex; gap:7px; align-items:center;}
+.chainview .vh .seal .d{width:6px;height:6px;border-radius:50%;background:var(--green); box-shadow:0 0 6px var(--green);}
+.blocks{padding:8px 0;}
+.blk{display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; padding:13px 18px; border-bottom:1px solid rgba(34,42,57,0.5); position:relative;}
+.blk:last-child{border-bottom:none;}
+.blk .ord{font-family:var(--fm); font-size:11px; color:var(--gold); width:34px;}
+.blk .meta .ev{font-size:13px; color:var(--cream);}
+.blk .meta .hs{font-family:var(--fm); font-size:10.5px; color:var(--text-3); margin-top:3px; word-break:break-all;}
+.blk .link{justify-self:end; font-family:var(--fm); font-size:9.5px; letter-spacing:0.8px; text-transform:uppercase; color:var(--green); border:1px solid rgba(111,184,138,0.4); border-radius:20px; padding:4px 10px; display:inline-flex; gap:6px; align-items:center;}
+.blk .link .d{width:5px;height:5px;border-radius:50%;background:var(--green);}
+.vaultctl{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;}
+.vaultctl button{cursor:pointer; font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--cream); background:rgba(13,16,22,0.8); border:1px solid var(--border); border-radius:24px; padding:11px 18px; transition:color .2s,border-color .2s;}
+.vaultctl button:hover{color:var(--gold); border-color:var(--gold-deep);}
+.vmsg{font-family:var(--fm); font-size:11.5px; line-height:1.6; margin-top:14px; min-height:20px;}
+.vmsg.ok{color:var(--green);} .vmsg.bad{color:var(--red);}
+.blk.tampered .hs{color:var(--red);} .blk.tampered .link{color:var(--red); border-color:rgba(215,122,106,0.5);} .blk.tampered .link .d{background:var(--red);}
+
+/* ===== CAPITAL POST exhibit (the controls, for real) ===== */
+.capgrid{display:grid; grid-template-columns:1.25fr 1fr; gap:22px; align-items:start;}
+.board{border:1px solid var(--border); border-radius:14px; overflow:hidden; background:linear-gradient(160deg,rgba(28,34,48,0.6),rgba(13,16,22,0.5));}
+.bh{display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--border);}
+.bh .tt{font-family:var(--fm); font-size:10.5px; letter-spacing:1.8px; text-transform:uppercase; color:var(--text-2);}
+.bh .lv{font-family:var(--fm); font-size:10.5px; letter-spacing:1.4px; text-transform:uppercase; color:var(--gold); display:inline-flex; gap:7px; align-items:center;}
+.bh .lv .d{width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite;}
+.bh .lv.frozen{color:var(--red);} .bh .lv.frozen .d{background:var(--red); animation:none;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.bm{display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--border); border-bottom:1px solid var(--border);}
+.bm .m{background:#0e1118; padding:12px 15px;}
+.bm .m .l{font-family:var(--fm); font-size:9px; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-2); margin-bottom:5px;}
+.bm .m .v{font-family:var(--fm); font-size:18px; color:var(--gold);} .bm .m .v.green{color:var(--green);} .bm .m .v.red{color:var(--red);}
+.rows{height:300px; overflow:hidden; position:relative; transition:opacity .3s;}
+.rows.frozen{opacity:0.4;}
+.r{display:grid; grid-template-columns:1.4fr 1.1fr 0.8fr 1fr; gap:8px; align-items:center; padding:11px 18px; border-bottom:1px solid rgba(34,42,57,0.6); animation:sl .5s ease;}
+@keyframes sl{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:none;}}
+.r .c{font-size:12.5px; color:var(--cream);} .r .ln{font-family:var(--fm); font-size:11px; color:var(--text-2);}
+.r .am{font-family:var(--fm); font-size:12.5px; color:var(--cream); text-align:right;}
+.r .s{justify-self:end; display:inline-flex; gap:6px; align-items:center; font-family:var(--fm); font-size:9.5px; letter-spacing:0.8px; text-transform:uppercase; padding:4px 9px; border-radius:20px; border:1px solid var(--border);}
+.r .s .d{width:5px; height:5px; border-radius:50%;}
+.s.vfy{color:var(--amber); border-color:rgba(214,168,95,0.4);} .s.vfy .d{background:var(--amber); animation:pulse 1s infinite;}
+.s.ok{color:var(--green); border-color:rgba(111,184,138,0.45); background:rgba(111,184,138,0.07);} .s.ok .d{background:var(--green);}
+.s.rej{color:var(--red); border-color:rgba(215,122,106,0.45); background:rgba(215,122,106,0.07);} .s.rej .d{background:var(--red);}
+.rows::after{content:""; position:absolute; left:0; right:0; bottom:0; height:50px; background:linear-gradient(180deg,transparent,#0c0f15); pointer-events:none;}
+.frozenban{position:absolute; inset:0; display:none; align-items:center; justify-content:center; z-index:3; background:rgba(9,11,15,0.55);}
+.frozenban.on{display:flex;}
+.frozenban span{font-family:var(--fm); font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--red); border:1px solid var(--red); border-radius:30px; padding:10px 18px;}
+
+.ctrls{display:flex; flex-direction:column; gap:12px;}
+.ctrl{border:1px solid var(--border); border-radius:12px; padding:15px 17px; background:linear-gradient(165deg,rgba(28,34,48,0.5),rgba(13,16,22,0.3)); display:flex; justify-content:space-between; align-items:center; gap:14px;}
+.ctrl .cl{font-family:var(--fd); font-size:16px; color:var(--cream);} .ctrl .cs{font-family:var(--fm); font-size:10px; letter-spacing:0.5px; color:var(--text-2); margin-top:3px;}
+.ctrl .state{font-family:var(--fm); font-size:10.5px; letter-spacing:0.6px; color:var(--green); display:inline-flex; align-items:center; gap:7px; white-space:nowrap;}
+.ctrl .state::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green);}
+.ctrl.kill{border-color:var(--gold-deep); background:linear-gradient(165deg,rgba(201,169,110,0.12),rgba(13,16,22,0.3));}
+.cov{margin-top:9px; height:5px; border-radius:4px; background:#0e1118; overflow:hidden;}
+.cov i{display:block; height:100%; width:78%; background:var(--gold); transition:width .4s,background .4s;}
+.cov.frozen i{background:var(--red);}
+.sw{width:52px; height:28px; border-radius:30px; background:#1a2030; border:1px solid var(--border); position:relative; cursor:pointer; flex:none; transition:background .25s,border-color .25s;}
+.sw::after{content:""; position:absolute; width:22px; height:22px; border-radius:50%; background:var(--cream); top:2px; left:2px; transition:left .25s,background .25s;}
+.sw.on{background:var(--red); border-color:var(--red);} .sw.on::after{left:26px; background:#15110a;}
+
+@media(max-width:880px){ .capgrid{grid-template-columns:1fr;} .chain{grid-template-columns:1fr 1fr;} .chain .node .arr{display:none;} .ladder{grid-template-columns:1fr;} .flow{grid-template-columns:1fr;} .flow .ar{display:none;} .cards.g3{grid-template-columns:1fr;} }
+
+.nowebgl{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center; text-align:center; padding:40px;}
+.nowebgl p{max-width:46ch; color:var(--text-2); line-height:1.6;}
+.nowebgl a{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<div class="plate">
+  <span class="mk">VFE</span>
+  <a class="skip" href="vfe.html">Enter the standard site &rarr;</a>
+</div>
+
+<div id="app"></div>
+<div class="hint" id="hint">click a room to step in &middot; drag to glance around</div>
+<div class="controls"><button class="btn" id="bell">&larr; back to the bell</button></div>
+
+<!-- ============ THE BIG BOARD (history) ============ -->
+<section class="exb" id="exb-board" aria-label="The Big Board - market history">
+  <button class="btn back" data-back="1">&larr; back to the floor</button>
+  <div class="exwrap">
+    <div class="exhead">
+      <div>
+        <div class="k">The Big Board &middot; history</div>
+        <h1>From paper to <em>glass.</em></h1>
+        <p class="lead">The public stock market went from paper certificates, trust-me opacity, and side bets to disclosure, a central source of truth, and proof you could verify. Freight factoring is making the same journey now.</p>
+      </div>
+    </div>
+    <div class="tl">
+      <div class="ev">
+        <div class="yr">1792</div>
+        <h3>Paper and a handshake</h3>
+        <p>Trading began under a buttonwood tree as a gentlemen's agreement. Ownership lived on paper certificates, trades settled by hand, and the whole thing ran on reputation. It worked because it was small.</p>
+      </div>
+      <div class="ev">
+        <div class="yr">1880s to 1920s</div>
+        <h3>The bucket shops</h3>
+        <p>Storefronts let people bet on price moves for stock they never owned. No delivery, no record you could check, just a counter and a chalkboard. When the opacity got bad enough, the public stopped trusting the market at all.</p>
+      </div>
+      <div class="ev">
+        <div class="yr">1934</div>
+        <h3>Disclosure becomes the law</h3>
+        <p>After the 1929 crash, the Securities Exchange Act created the Securities and Exchange Commission and made disclosure mandatory. The market would now run on verifiable information rather than reputation. Trust was no longer enough; you had to be able to show your work.</p>
+      </div>
+      <div class="ev">
+        <div class="yr">1971 to 1973</div>
+        <h3>Screens and a central vault</h3>
+        <p>NASDAQ opened in 1971 as the first electronic stock market, replacing the trading floor with quotes on a screen. In 1973 a central depository put the certificates into one vault and moved ownership by ledger entry instead of by hand. One verified record replaced a mountain of paper, and the market could finally scale, clear, and be checked.</p>
+      </div>
+    </div>
+    <p class="pull">Paper and trust did not just get faster. They were replaced by <em>disclosure, a central source of truth, and proof you could verify.</em></p>
+    <div class="exfoot">
+      <a class="cta" href="vfe.html#exchange">Read the full history &rarr;</a>
+      <p class="note">Historical milestones drawn from public records. Dates are approximate where an era, not a single day, marks the change.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE GLASS BOX (verify) ============ -->
+<section class="exb" id="exb-glass" aria-label="The Glass Box - how we verify">
+  <button class="btn back" data-back="1">&larr; back to the floor</button>
+  <div class="exwrap">
+    <div class="exhead">
+      <div>
+        <div class="k">The Glass Box &middot; how we verify</div>
+        <h1>Don't trust. <em>Verify.</em></h1>
+        <p class="lead">Most factoring is a black box. Ours is glass. Every figure sits on a chain that runs from the dollar funded all the way down to the original document, and back up to the decision that approved it. Read it in either direction. Nothing dead-ends in an assertion.</p>
+      </div>
+    </div>
+
+    <div class="subhead">The chain of truth, read either way</div>
+    <div class="chain">
+      <div class="node"><div class="cn">01</div><h3>Claim</h3><p>A statement the book makes. This receivable is real and fundable.</p><span class="arr">&rarr;</span></div>
+      <div class="node"><div class="cn">02</div><h3>Exhibit</h3><p>The original document behind it: the bill of lading, the rate confirmation, the proof of delivery.</p><span class="arr">&rarr;</span></div>
+      <div class="node"><div class="cn">03</div><h3>Evidence</h3><p>What we verified from that exhibit, read at the source, not from a retyped summary.</p><span class="arr">&rarr;</span></div>
+      <div class="node"><div class="cn">04</div><h3>Rule</h3><p>The check that ran against the evidence, applied the same way every time.</p><span class="arr">&rarr;</span></div>
+      <div class="node"><div class="cn">05</div><h3>Doctrine</h3><p>The principle the rule comes from, so the reasoning is never improvised.</p><span class="arr">&rarr;</span></div>
+      <div class="node"><div class="cn">06</div><h3>Approver</h3><p>What signed off, on the record, so the decision has an owner.</p></div>
+    </div>
+
+    <div class="subhead">Verification is a stack, not one lookup</div>
+    <div class="ladder">
+      <div class="rung"><div class="rn">01</div><div><h3>Identity</h3><p>Is this carrier real, properly authorized, and who they say they are?</p></div></div>
+      <div class="rung"><div class="rn">02</div><div><h3>Operational reality</h3><p>Does their pattern of activity look like a genuine, running business rather than a shell?</p></div></div>
+      <div class="rung"><div class="rn">03</div><div><h3>Transaction reality</h3><p>Did this load actually move? Do the documents hold together, and are they authentic rather than altered or reused?</p></div></div>
+      <div class="rung"><div class="rn">04</div><div><h3>The network</h3><p>What the wider network reveals that no single factor can see alone: double-brokering, address rings, repeat bad actors. The layer that gets stronger with every transaction.</p></div></div>
+      <div class="rung"><div class="rn">05</div><div><h3>Synthesis</h3><p>Every signal resolved into one confidence read, weakest-link aware and cross-checked, not an average that hides a red flag.</p></div></div>
+      <div class="rung"><div class="rn">06</div><div><h3>Continuous monitoring</h3><p>Verification does not stop at funding. The book is watched and re-checked as conditions change.</p></div></div>
+    </div>
+
+    <div class="exfoot">
+      <a class="cta" href="vfe.html#glass-box">See how we verify &rarr;</a>
+      <p class="note">Every meaningful event is sealed and recorded before it is allowed to count, in an append-only, replayable record. The book is not a story we tell. It is a record you can audit, line by line, down to the exhibit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARRIERS' POST (get paid) ============ -->
+<section class="exb" id="exb-carriers" aria-label="Carriers' Post - get paid">
+  <button class="btn back" data-back="1">&larr; back to the floor</button>
+  <div class="exwrap">
+    <div class="exhead">
+      <div>
+        <div class="k">Carriers' Post &middot; get paid</div>
+        <h1>Run the load. <em>Get paid.</em></h1>
+        <p class="lead">Factoring without the fine print. Upload your load documents, we verify them at the source, and you get funded. Clear terms, no buried fees, and the network protects you from double-brokering.</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="step"><div class="sn">01</div><h3>Upload</h3><p>Drop the rate confirmation, the bill of lading, and the proof of delivery. That is the whole packet.</p></div>
+      <div class="ar">&rarr;</div>
+      <div class="step"><div class="sn">02</div><h3>Verified at the source</h3><p>We read the documents at the source and check the load against the network, not from a retyped summary.</p></div>
+      <div class="ar">&rarr;</div>
+      <div class="step"><div class="sn">03</div><h3>Funded</h3><p>Once it clears, your cash moves. You see exactly what was checked and why it cleared.</p></div>
+    </div>
+
+    <div class="upbox">
+      <div class="uh"><span class="tt">Demo load packet &middot; Ridgeline Freight</span><span class="tt" id="upstate">awaiting upload</span></div>
+      <div class="ub">
+        <div class="docrow" data-doc><span class="dn">Rate confirmation</span><span>DAL to ATL &middot; demo</span><span class="ds vfy" data-status><span class="d"></span>Pending</span></div>
+        <div class="docrow" data-doc><span class="dn">Bill of lading</span><span>BOL-4471 &middot; demo</span><span class="ds vfy" data-status><span class="d"></span>Pending</span></div>
+        <div class="docrow" data-doc><span class="dn">Proof of delivery</span><span>signed, demo</span><span class="ds vfy" data-status><span class="d"></span>Pending</span></div>
+        <div class="upfoot">
+          <span class="fund">Demo advance on this packet: <b id="fundval">held until verified</b></span>
+          <button class="upbtn" id="upbtn">Upload and verify</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="exfoot">
+      <a class="cta" href="vfe.html#carriers">Factor with VFE &rarr;</a>
+      <p class="note">Illustrative demo. Carrier names, lanes, and figures shown here are fictional and for demonstration only.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAPITAL POST (the controls) ============ -->
+<section class="exb" id="exb-capital" aria-label="Capital Post - the controls">
+  <button class="btn back" data-back="1">&larr; back to the floor</button>
+  <div class="exwrap">
+    <div class="exhead">
+      <div>
+        <div class="k">Capital Post &middot; the controls</div>
+        <h1>You hold the <em>controls.</em></h1>
+        <p class="lead">Every term in a credit facility exists to manage the lender's blindness. VFE deletes the blindness and hands you the instruments, live, enforced in code, not promised on paper. Try the brake.</p>
+      </div>
+    </div>
+
+    <div class="capgrid">
+      <div class="board">
+        <div class="bh"><span class="tt">VFE - the live book</span><span class="lv" id="lv"><span class="d"></span>Clearing</span></div>
+        <div class="bm">
+          <div class="m"><div class="l">Book funded today</div><div class="v" id="book">$0</div></div>
+          <div class="m"><div class="l">Verified</div><div class="v green" id="count">0</div></div>
+          <div class="m"><div class="l">Rejected at gate</div><div class="v red" id="rej">0</div></div>
+        </div>
+        <div class="rows" id="rows"><div class="frozenban" id="fban"><span>Funding frozen, you hold the brake</span></div></div>
+      </div>
+
+      <div class="ctrls">
+        <div class="ctrl"><div><div class="cl">Live book view</div><div class="cs">loan by loan, with the proof behind each</div></div><span class="state">Open</span></div>
+        <div class="ctrl"><div><div class="cl">Eligibility gate</div><div class="cs">checked at origination, ineligible never enters</div></div><span class="state">Enforced</span></div>
+        <div class="ctrl"><div><div class="cl">Covenant monitor</div><div class="cs" id="covcs">advance: top of band &middot; within covenant</div><div class="cov" id="cov"><i></i></div></div><span class="state" id="covstate">Live</span></div>
+        <div class="ctrl kill"><div><div class="cl">Kill switch</div><div class="cs" id="killcs">the brake sits with you, not us</div></div><div class="sw" id="kill" role="switch" aria-checked="false" tabindex="0"></div></div>
+      </div>
+    </div>
+
+    <div class="exfoot">
+      <a class="cta" href="vfe.html#capital">Request data-room access &rarr;</a>
+      <p class="note">The full data room opens under a mutual NDA. The first step is a short conversation.</p>
+    </div>
+    <p class="disc">Illustrative and pre-launch. Not an offer to sell or a solicitation to buy any security, and not a commitment to lend or borrow. Every forward-looking figure is illustrative until VFE's independent performance-calibration milestone.</p>
+  </div>
+</section>
+
+<!-- ============ THE VAULT (audit chain) ============ -->
+<section class="exb" id="exb-vault" aria-label="The Vault - the sealed record">
+  <button class="btn back" data-back="1">&larr; back to the floor</button>
+  <div class="exwrap">
+    <div class="exhead">
+      <div>
+        <div class="k">The Vault &middot; the sealed record</div>
+        <h1>One record, <em>sealed.</em></h1>
+        <p class="lead">Every meaningful event is sealed and recorded before it is allowed to count, in an append-only chain where each entry carries the fingerprint of the one before it. Change anything after the fact and the chain breaks. Try it.</p>
+      </div>
+    </div>
+
+    <div class="chainview">
+      <div class="vh"><span class="tt">Append-only audit chain &middot; demo</span><span class="seal" id="vseal"><span class="d"></span>Chain intact</span></div>
+      <div class="blocks" id="vblocks"></div>
+    </div>
+    <div class="vaultctl">
+      <button id="vtamper">Try to alter a sealed entry</button>
+      <button id="vverify">Re-verify the chain</button>
+      <button id="vreset">Reset the record</button>
+    </div>
+    <div class="vmsg" id="vmsg"></div>
+
+    <div class="exfoot">
+      <a class="cta" href="vfe.html#glass-box">See the source of truth &rarr;</a>
+      <p class="note">Illustrative demo. The fingerprints shown are generated for demonstration. The principle is real: a tamper-evident, replayable record anyone with access can audit.</p>
+    </div>
+  </div>
+</section>
+
+<div class="nowebgl" id="nowebgl"><p>This experience needs WebGL. Open it in a current browser, or <a href="vfe.html">enter the standard site &rarr;</a></p></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  if(!window.THREE){ document.getElementById("nowebgl").style.display="flex"; return; }
+  var GOLD=0xc9a96e, INK=0x090b0f;
+  var scene=new THREE.Scene(); scene.background=new THREE.Color(INK); scene.fog=new THREE.FogExp2(INK,0.020);
+  var camera=new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 200);
+  var renderer; try{ renderer=new THREE.WebGLRenderer({antialias:true}); }catch(e){ document.getElementById("nowebgl").style.display="flex"; return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setSize(innerWidth,innerHeight);
+  document.getElementById("app").appendChild(renderer.domElement);
+
+  var lineMat=new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.85});
+  var lineSoft=new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.45});
+  var wallMat=new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.10});
+  function edges(geo,mat){ return new THREE.LineSegments(new THREE.EdgesGeometry(geo), mat||lineMat); }
+
+  var grid=new THREE.GridHelper(48,48,GOLD,GOLD); grid.material.transparent=true; grid.material.opacity=0.12; scene.add(grid);
+  function wall(w,h,x,y,z,ry){ var wf=new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.PlaneGeometry(w,h,Math.round(w/3),Math.round(h/2))), wallMat); wf.position.set(x,y,z); wf.rotation.y=ry; scene.add(wf); }
+  wall(48,12,0,6,-24,0); wall(48,12,0,6,24,0); wall(48,12,-24,6,0,Math.PI/2); wall(48,12,24,6,0,Math.PI/2);
+
+  function ring(r,op){ var pts=[]; for(var i=0;i<=64;i++){var a=i/64*Math.PI*2; pts.push(new THREE.Vector3(Math.cos(a)*r,0.02,Math.sin(a)*r));} var l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:op})); scene.add(l); return l; }
+  ring(2.6,0.5); ring(1.7,0.7); var pulseRing=ring(0.9,0.9);
+  (function(){ var c=document.createElement("canvas"); c.width=c.height=128; var x=c.getContext("2d"); var g=x.createRadialGradient(64,64,0,64,64,64); g.addColorStop(0,"rgba(201,169,110,0.9)"); g.addColorStop(0.4,"rgba(201,169,110,0.25)"); g.addColorStop(1,"rgba(201,169,110,0)"); x.fillStyle=g; x.fillRect(0,0,128,128); window._glow=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false})); window._glow.scale.set(3,3,1); window._glow.position.set(0,0.6,0); scene.add(window._glow); })();
+  var beam=edges(new THREE.CylinderGeometry(0.06,0.06,7,6), new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.3})); beam.position.set(0,3.5,0); scene.add(beam);
+
+  function makeLabel(name,sub){ var c=document.createElement("canvas"); c.width=512; c.height=160; var x=c.getContext("2d"); x.textAlign="center"; x.fillStyle="#ece8df"; x.font="500 56px Georgia, serif"; x.fillText(name,256,70); x.fillStyle="#c9a96e"; x.font="500 26px ui-monospace, monospace"; x.fillText(sub.toUpperCase(),256,116); var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false})); sp.scale.set(6,1.9,1); return sp; }
+  var pl=makeLabel("The Pit","the live book"); pl.position.set(0,2.4,0); scene.add(pl);
+
+  /* small animated objects registry (spin/float in the render loop) */
+  var animObjs=[];
+  function addAnim(obj,fn){ animObjs.push({o:obj,fn:fn}); }
+
+  /* ---- per-room 3D content builders (on-brand gold wireframe) ---- */
+  function buildBoard(r){
+    // The Big Board: a tall wireframe panel with horizontal "ticker" bars and four milestone markers
+    var grp=new THREE.Group(); grp.position.copy(r.pos);
+    var face=new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.PlaneGeometry(r.w,r.h,9,5)), lineSoft); grp.add(face);
+    for(var i=0;i<4;i++){ var dot=edges(new THREE.BoxGeometry(0.5,0.5,0.5)); dot.position.set(-r.w/2+2.2+i*(r.w-4)/3,0,0.3); grp.add(dot);
+      addAnim(dot,(function(d,ph){return function(t){ d.rotation.x=t*0.6+ph; d.rotation.y=t*0.8+ph; };})(dot,i)); }
+    // ascending step-line across the board (paper -> glass)
+    var lp=[]; for(var k=0;k<=8;k++){ lp.push(new THREE.Vector3(-r.w/2+1+k*(r.w-2)/8, -r.h/3 + (k/8)*r.h*0.55, 0.35)); }
+    grp.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(lp), lineMat));
+    scene.add(grp); return grp;
+  }
+  function buildGlass(r){
+    // The Glass Box: nested transparent cubes (box within a box) slowly counter-rotating
+    var grp=new THREE.Group(); grp.position.copy(r.pos);
+    var outer=edges(new THREE.BoxGeometry(r.w,r.h,r.d));
+    var mid=edges(new THREE.BoxGeometry(r.w*0.6,r.h*0.6,r.d*0.6), lineSoft);
+    var core=edges(new THREE.OctahedronGeometry(0.9), lineMat);
+    grp.add(outer); grp.add(mid); grp.add(core);
+    addAnim(mid,function(t){ mid.rotation.y=t*0.4; mid.rotation.x=t*0.18; });
+    addAnim(core,function(t){ core.rotation.y=-t*0.7; core.rotation.z=t*0.3; core.position.y=Math.sin(t*1.4)*0.25; });
+    scene.add(grp); return grp;
+  }
+  function buildVault(r){
+    // The Vault: a heavy box with a circular dial door and a stack of "sealed blocks" rotating inside
+    var grp=new THREE.Group(); grp.position.copy(r.pos);
+    grp.add(edges(new THREE.BoxGeometry(r.w,r.h,r.d)));
+    var dial=edges(new THREE.CylinderGeometry(1.1,1.1,0.2,24), lineMat); dial.rotation.x=Math.PI/2; dial.position.set(0,0,r.d/2+0.05); grp.add(dial);
+    var spoke=edges(new THREE.BoxGeometry(2.0,0.12,0.12), lineMat); spoke.position.set(0,0,r.d/2+0.16); grp.add(spoke);
+    addAnim(spoke,function(t){ spoke.rotation.z=t*0.5; });
+    var stack=new THREE.Group();
+    for(var i=0;i<4;i++){ var b=edges(new THREE.BoxGeometry(1.6,0.32,1.6), lineSoft); b.position.y=-r.h/3 + i*0.5; stack.add(b); }
+    grp.add(stack); addAnim(stack,function(t){ stack.rotation.y=t*0.25; });
+    scene.add(grp); return grp;
+  }
+  function buildCarriers(r){
+    // Carriers' Post: a box with a slowly orbiting "truck" tetra block carrying a small invoice plane
+    var grp=new THREE.Group(); grp.position.copy(r.pos);
+    grp.add(edges(new THREE.BoxGeometry(r.w,r.h,r.d)));
+    var door=edges(new THREE.BoxGeometry(1.6,2.8,0.1)); door.position.set(0,-r.h/2+1.4, r.d/2+0.05); grp.add(door);
+    var orbit=new THREE.Group();
+    var rig=edges(new THREE.BoxGeometry(0.9,0.5,1.4), lineMat); rig.position.set(1.6,0,0); orbit.add(rig);
+    var inv=new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.PlaneGeometry(0.7,0.5)), lineMat); inv.position.set(1.6,0.55,0); orbit.add(inv);
+    grp.add(orbit); addAnim(orbit,function(t){ orbit.rotation.y=t*0.6; });
+    scene.add(grp); return grp;
+  }
+  function buildCapital(r){
+    // Capital Post: a box with a tilted "lever/brake" and a small floating ledger grid
+    var grp=new THREE.Group(); grp.position.copy(r.pos);
+    grp.add(edges(new THREE.BoxGeometry(r.w,r.h,r.d)));
+    var door=edges(new THREE.BoxGeometry(1.6,2.8,0.1)); door.position.set(0,-r.h/2+1.4, r.d/2+0.05); grp.add(door);
+    var ledger=new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.PlaneGeometry(2.0,1.4,4,3)), lineSoft); ledger.position.set(0,0.4,0.4); grp.add(ledger);
+    var base=edges(new THREE.CylinderGeometry(0.18,0.22,0.3,8), lineMat); base.position.set(1.1,-0.8,0.6); grp.add(base);
+    var lever=edges(new THREE.CylinderGeometry(0.07,0.07,1.5,6), lineMat); lever.position.set(1.1,-0.1,0.6); lever.rotation.z=-0.5; grp.add(lever);
+    var knob=edges(new THREE.SphereGeometry(0.16,8,6), lineMat); knob.position.set(0.75,0.45,0.6); grp.add(knob);
+    addAnim(ledger,function(t){ ledger.position.y=0.4+Math.sin(t*1.2)*0.12; });
+    scene.add(grp); return grp;
+  }
+
+  var BELL={pos:new THREE.Vector3(0,2.2,18), look:new THREE.Vector3(0,1.1,0)};
+  var rooms=[
+    {id:"board",k:"the wall",nm:"The Big Board",ln:"history",pos:new THREE.Vector3(0,4,-22),w:18,h:7,d:0.5,board:true, exhibit:"exb-board",
+     vantage:{pos:new THREE.Vector3(0,4.2,-9),look:new THREE.Vector3(0,4,-22)},
+     build:buildBoard},
+    {id:"glass",k:"centre-left",nm:"The Glass Box",ln:"how we verify",pos:new THREE.Vector3(-13,2.2,-3),w:5,h:4.4,d:5, exhibit:"exb-glass",
+     vantage:{pos:new THREE.Vector3(-13,2.4,4.5),look:new THREE.Vector3(-13,2.2,-3)},
+     build:buildGlass},
+    {id:"vault",k:"centre-right",nm:"The Vault",ln:"the sealed record",pos:new THREE.Vector3(13,2.2,-3),w:5,h:4.4,d:5, exhibit:"exb-vault",
+     vantage:{pos:new THREE.Vector3(13,2.4,4.5),look:new THREE.Vector3(13,2.2,-3)},
+     build:buildVault},
+    {id:"carriers",k:"front-left",nm:"Carriers' Post",ln:"get paid",pos:new THREE.Vector3(-11,2,9),w:5,h:4,d:5, exhibit:"exb-carriers",
+     vantage:{pos:new THREE.Vector3(-11,2.3,2),look:new THREE.Vector3(-11,2,9)},
+     build:buildCarriers},
+    {id:"capital",k:"front-right",nm:"Capital Post",ln:"the controls",pos:new THREE.Vector3(11,2,9),w:5,h:4,d:5, exhibit:"exb-capital",
+     vantage:{pos:new THREE.Vector3(11,2.3,2),look:new THREE.Vector3(11,2,9)},
+     build:buildCapital}
+  ];
+  var clickables=[];
+  rooms.forEach(function(r){
+    if(r.build) r.build(r);
+    var lab=makeLabel(r.nm,r.ln); lab.position.set(r.pos.x, r.pos.y+r.h/2+1.4, r.pos.z); scene.add(lab);
+    var hit=new THREE.Mesh(new THREE.BoxGeometry(r.w+1.5,r.h+1.5,(r.board?2:r.d)+1.5), new THREE.MeshBasicMaterial({transparent:true,opacity:0})); hit.position.copy(r.pos); hit.userData=r; scene.add(hit); clickables.push(hit);
+  });
+  (function(){ var n=140,pos=new Float32Array(n*3); for(var i=0;i<n;i++){pos[i*3]=(Math.random()-0.5)*46;pos[i*3+1]=Math.random()*10;pos[i*3+2]=(Math.random()-0.5)*46;} var g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.BufferAttribute(pos,3)); scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:GOLD,size:0.05,transparent:true,opacity:0.5}))); })();
+
+  /* ---------- guided camera: vantages + clamped glance ---------- */
+  camera.rotation.order="YXZ";
+  var cur={pos:BELL.pos.clone(),look:BELL.look.clone()};
+  var baseYaw=Math.PI, basePitch=0, mYaw=0, mPitch=0, mode="idle";
+  function setBaseFrom(look){ camera.position.copy(cur.pos); camera.lookAt(look); baseYaw=camera.rotation.y; basePitch=camera.rotation.x; mYaw=0; mPitch=0; }
+  camera.position.copy(cur.pos); setBaseFrom(cur.look);
+
+  var tw=null;
+  function goVantage(v, after){
+    var fromP=camera.position.clone(), fromL=cur.look.clone(), t0=performance.now(), ms=720; mode="tween";
+    cancelAnimationFrame(tw);
+    (function step(now){ var k=Math.min(1,(now-t0)/ms), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      camera.position.lerpVectors(fromP,v.pos,e); var ln=new THREE.Vector3().lerpVectors(fromL,v.look,e); camera.lookAt(ln);
+      if(k<1){ tw=requestAnimationFrame(step); } else { cur={pos:v.pos.clone(),look:v.look.clone()}; setBaseFrom(cur.look); mode="idle"; if(after) after(); }
+    })(t0);
+  }
+
+  var app=document.getElementById("app"), down=false,lx=0,ly=0,moved=0;
+  app.addEventListener("pointerdown",function(e){ down=true; moved=0; lx=e.clientX; ly=e.clientY; app.classList.add("drag"); });
+  window.addEventListener("pointermove",function(e){ if(!down)return; var dx=e.clientX-lx,dy=e.clientY-ly; moved+=Math.abs(dx)+Math.abs(dy); mYaw-=dx*0.0035; mPitch-=dy*0.0035; mYaw=Math.max(-0.4,Math.min(0.4,mYaw)); mPitch=Math.max(-0.16,Math.min(0.13,mPitch)); lx=e.clientX; ly=e.clientY; });
+  window.addEventListener("pointerup",function(e){ down=false; app.classList.remove("drag"); if(moved<6) tryClick(e); });
+
+  var ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+  function tryClick(e){ if(exbOpen) return; ndc.x=(e.clientX/innerWidth)*2-1; ndc.y=-(e.clientY/innerHeight)*2+1; ray.setFromCamera(ndc,camera); var h=ray.intersectObjects(clickables,false); if(h.length) enterRoom(h[0].object.userData); }
+
+  function enterRoom(r){ hideHint(); goVantage(r.vantage, function(){ openExb(r); }); }
+  function backToFloor(){ closeExb(); goVantage(BELL); }
+  document.getElementById("bell").addEventListener("click",backToFloor);
+
+  /* ---------- exhibit overlays (one per room) ---------- */
+  var exbOpen=false, exbCur=null;
+  function openExb(r){
+    exbCur=r.exhibit; var el=document.getElementById(r.exhibit); if(!el) return;
+    el.classList.add("open"); exbOpen=true;
+    if(r.id==="capital") startCap();
+    if(r.id==="vault") renderVault();
+  }
+  function closeExb(){
+    if(exbCur){ var el=document.getElementById(exbCur); if(el) el.classList.remove("open"); }
+    stopCap(); exbOpen=false; exbCur=null;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-back]"),function(b){ b.addEventListener("click",backToFloor); });
+
+  /* ---------- CAPITAL exhibit logic ---------- */
+  var capxStarted=false, capTimer=null, frozen=false;
+  var carriers=["Ridgeline Freight","Cobalt Carriers","Sierra Logistics","Maple Haul Co.","Granite Transport","Vista Trucking","Harbor Point Freight","Ironwood Carriers","Delta Lane Logistics","Northwind Haulers"];
+  var lanes=["DAL to ATL","LAX to PHX","CHI to DET","SEA to PDX","MIA to JAX","DEN to SLC","HOU to SAT","NYC to BOS","ATL to CLT","PHX to ABQ"];
+  var rowsEl=document.getElementById("rows"), fban=document.getElementById("fban");
+  var book=0,count=0,rejN=0,ix=0;
+  function money(n){return "$"+n.toLocaleString("en-US");}
+  function set(id,v){var el=document.getElementById(id); if(el) el.textContent=v;}
+  function spawn(){
+    if(frozen) return;
+    var bad=Math.random()<0.16; var car=carriers[ix%carriers.length], lane=lanes[(ix*3+2)%lanes.length], amt=2200+Math.round(Math.random()*46)*100; ix++;
+    var r=document.createElement("div"); r.className="r";
+    r.innerHTML='<span class="c">'+car+'</span><span class="ln">'+lane+'</span><span class="am">'+money(amt)+'</span><span class="s vfy"><span class="d"></span>Verifying</span>';
+    rowsEl.insertBefore(r, fban.nextSibling);
+    while(rowsEl.querySelectorAll(".r").length>6){ var first=rowsEl.querySelector(".r"); if(first) rowsEl.removeChild(first); }
+    setTimeout(function(){ if(frozen){ return; } var s=r.querySelector(".s"); if(!s) return;
+      if(bad){ s.className="s rej"; s.innerHTML='<span class="d"></span>Rejected'; rejN++; set("rej",rejN); }
+      else { s.className="s ok"; s.innerHTML='<span class="d"></span>Verified'; book+=amt; count++; set("book",money(book)); set("count",count); }
+    },1400);
+  }
+  function startCap(){ if(capTimer || frozen) return; spawn(); setTimeout(spawn,650); capTimer=setInterval(spawn,2100); }
+  function stopCap(){ clearInterval(capTimer); capTimer=null; }
+
+  var killSw=document.getElementById("kill"), lv=document.getElementById("lv"), cov=document.getElementById("cov");
+  function toggleKill(){
+    frozen=!frozen; killSw.classList.toggle("on",frozen); killSw.setAttribute("aria-checked",frozen);
+    document.getElementById("killcs").textContent=frozen?"engaged, the book is frozen":"the brake sits with you, not us";
+    document.getElementById("covcs").textContent=frozen?"advance: held · funding paused":"advance: top of band · within covenant";
+    document.getElementById("covstate").textContent=frozen?"Paused":"Live";
+    cov.classList.toggle("frozen",frozen);
+    fban.classList.toggle("on",frozen); rowsEl.classList.toggle("frozen",frozen);
+    lv.classList.toggle("frozen",frozen); lv.innerHTML=frozen?'<span class="d"></span>Frozen':'<span class="d"></span>Clearing';
+    if(frozen) stopCap(); else if(exbCur==="exb-capital") startCap();
+  }
+  killSw.addEventListener("click",toggleKill);
+  killSw.addEventListener("keydown",function(e){ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggleKill(); } });
+
+  /* ---------- CARRIERS exhibit logic ---------- */
+  (function(){
+    var btn=document.getElementById("upbtn"), state=document.getElementById("upstate"), fundval=document.getElementById("fundval");
+    var rows=document.querySelectorAll("#exb-carriers [data-doc]");
+    function reset(){ state.textContent="awaiting upload"; fundval.textContent="held until verified"; fundval.style.color="";
+      rows.forEach(function(rw){ var s=rw.querySelector("[data-status]"); s.className="ds vfy"; s.innerHTML='<span class="d"></span>Pending'; });
+      btn.disabled=false; btn.textContent="Upload and verify"; }
+    btn.addEventListener("click",function(){
+      btn.disabled=true; btn.textContent="Verifying at the source..."; state.textContent="verifying at the source";
+      rows.forEach(function(rw,i){ setTimeout(function(){ var s=rw.querySelector("[data-status]"); s.className="ds ok"; s.innerHTML='<span class="d"></span>Verified'; },600+i*650); });
+      setTimeout(function(){ state.textContent="cleared"; fundval.textContent="released to you"; fundval.style.color="var(--green)"; btn.textContent="Funded ✓"; },600+rows.length*650+400);
+    });
+    reset();
+  })();
+
+  /* ---------- VAULT exhibit logic ---------- */
+  (function(){
+    var blocksEl=document.getElementById("vblocks"), seal=document.getElementById("vseal"), msg=document.getElementById("vmsg");
+    var events=["Carrier identity verified at source","Bill of lading read and matched","Load checked against the network","Eligibility gate cleared","Advance released and recorded","Continuous monitoring checkpoint"];
+    var chain=[];
+    function hash(s){ var h=2166136261>>>0; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } return ("00000000"+h.toString(16)).slice(-8); }
+    function build(){ chain=[]; var prev="genesis0";
+      for(var i=0;i<events.length;i++){ var h=hash(prev+"|"+i+"|"+events[i]); chain.push({i:i,ev:events[i],prev:prev,h:h,tampered:false}); prev=h; } }
+    function render(){
+      blocksEl.innerHTML="";
+      chain.forEach(function(b){
+        var d=document.createElement("div"); d.className="blk"+(b.tampered?" tampered":"");
+        d.innerHTML='<span class="ord">'+String(b.i+1).padStart(2,"0")+'</span>'+
+          '<div class="meta"><div class="ev">'+b.ev+'</div><div class="hs">seal '+b.h+' &middot; prev '+b.prev+'</div></div>'+
+          '<span class="link"><span class="d"></span>'+(b.tampered?"broken":"linked")+'</span>';
+        blocksEl.appendChild(d);
+      });
+    }
+    function verify(){
+      var ok=true, prev="genesis0";
+      for(var i=0;i<chain.length;i++){ var expect=hash(prev+"|"+i+"|"+chain[i].ev);
+        if(chain[i].tampered || chain[i].h!==expect){ ok=false; } prev=chain[i].h; }
+      if(ok){ seal.innerHTML='<span class="d"></span>Chain intact'; seal.style.color="var(--green)";
+        msg.className="vmsg ok"; msg.textContent="Replayed top to bottom. Every fingerprint matches the entry before it. The record is intact."; }
+      else { seal.innerHTML='<span class="d" style="background:var(--red)"></span>Chain broken'; seal.style.color="var(--red)";
+        msg.className="vmsg bad"; msg.textContent="Tampering detected. One entry no longer matches the fingerprint sealed before it, so the whole chain reads broken. That is the point: you cannot quietly change the past."; }
+    }
+    document.getElementById("vtamper").addEventListener("click",function(){
+      var i=2; chain[i].ev=chain[i].ev+" *altered*"; chain[i].tampered=true; render();
+      msg.className="vmsg"; msg.style.color="var(--amber)"; msg.textContent="A sealed entry was altered after the fact. Now re-verify the chain.";
+    });
+    document.getElementById("vverify").addEventListener("click",verify);
+    document.getElementById("vreset").addEventListener("click",function(){ build(); render(); seal.innerHTML='<span class="d"></span>Chain intact'; seal.style.color="var(--green)"; msg.className="vmsg"; msg.textContent=""; });
+    window.renderVault=function(){ if(!chain.length){ build(); render(); } };
+  })();
+
+  window.addEventListener("keydown",function(e){ if(e.key==="Escape") backToFloor(); });
+
+  /* hint + loop */
+  var hint=document.getElementById("hint"), hintGone=false; function hideHint(){ if(!hintGone){hintGone=true; hint.style.opacity="0";} } setTimeout(hideHint,5600);
+  var clock=new THREE.Clock();
+  function frame(){ requestAnimationFrame(frame); var t=clock.elapsedTime;
+    if(mode==="idle"){ camera.position.copy(cur.pos); camera.rotation.set(basePitch+mPitch, baseYaw+mYaw, 0); }
+    var k=(Math.sin(t*1.8)+1)/2; pulseRing.scale.setScalar(0.9+k*2.0); pulseRing.material.opacity=0.9*(1-k); if(window._glow) window._glow.scale.setScalar(2.6+k*1.2);
+    for(var i=0;i<animObjs.length;i++){ animObjs[i].fn(t); }
+    renderer.render(scene,camera);
+  }
+  frame();
+  addEventListener("resize",function(){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); });
+})();
+</script>
+</body>
+</html>
