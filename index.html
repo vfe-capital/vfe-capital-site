@@ -823,11 +823,26 @@ body::after{ background-image:linear-gradient(rgba(17,20,27,0.020) 1px, transpar
   .sot-d-doc{font-family:var(--font-mono); font-size:12px; color:var(--text-3); border-top:1px solid var(--border); padding-top:14px; line-height:1.7;}
   .sot-fade{transition:opacity .22s;}
   @media(max-width:640px){ .sot{grid-template-columns:1fr;} }
+  .sot{position:relative;}
+  .sot-trace{display:flex; flex-wrap:wrap; align-items:center; gap:14px; justify-content:center; max-width:940px; margin:0 auto 24px;}
+  .sot-trace-btn{font-family:var(--font-mono); font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#2b2410; background:var(--gold); border:0; border-radius:30px; padding:11px 22px; cursor:pointer; display:inline-flex; align-items:center; gap:9px; transition:transform .15s, box-shadow .2s;}
+  .sot-trace-btn:hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(201,169,110,0.30);}
+  .sot-trace-btn[disabled]{opacity:0.65; cursor:default; transform:none; box-shadow:none;}
+  .sot-trace-cap{font-family:var(--font-mono); font-size:11px; letter-spacing:1px; color:var(--text-3);}
+  .sot-coin{position:absolute; left:-13px; top:0; width:26px; height:26px; border-radius:50%; background:var(--gold); color:#2b2410; font-family:var(--font-mono); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px var(--bg),0 5px 13px rgba(201,169,110,0.55); opacity:0; transition:transform .55s cubic-bezier(.5,.05,.3,1), opacity .3s; z-index:4; pointer-events:none;}
+  .sot-coin.show{opacity:1;}
+  .sot-s.done .sn::after{content:" \2713"; color:var(--gold-deep);}
+  .sot-seal{display:none; margin-top:18px; padding-top:14px; border-top:1px dashed var(--border); font-family:var(--font-mono); font-size:12px; letter-spacing:0.8px; color:var(--gold-deep);}
+  .sot-seal.show{display:block; animation:sealin .5s ease;}
+  @keyframes sealin{from{opacity:0; transform:translateY(6px);}to{opacity:1; transform:none;}}
+  @media(prefers-reduced-motion:reduce){ .sot-coin{transition:none;} }
   </style>
   <section id="gb-sot-example" style="padding-top:0;">
     <div class="wrap">
-      <div class="section-head reveal"><span class="kicker">A worked example</span><h2>Follow one funded dollar to its proof.</h2><p class="lead">Funding FX-10293. Click any link in the chain to see exactly what sits behind it.</p></div>
+      <div class="section-head reveal"><span class="kicker">A worked example</span><h2>Follow one funded dollar to its proof.</h2><p class="lead">Watch one funded dollar prove itself, link by link, or click any step to jump in.</p></div>
+      <div class="sot-trace reveal"><button class="sot-trace-btn" id="sotTrace" type="button">&#9654;&nbsp; Trace the dollar</button><span class="sot-trace-cap">FX-10293 &middot; $4,800 &middot; DAL &rarr; ATL &middot; net-30</span></div>
       <div class="sot reveal">
+        <div class="sot-coin" id="sotCoin" aria-hidden="true">$</div>
         <div class="sot-steps" id="sotSteps">
           <button class="sot-s on" data-i="0"><span class="sn">01</span> Claim</button>
           <button class="sot-s" data-i="1"><span class="sn">02</span> Exhibit</button>
@@ -841,6 +856,7 @@ body::after{ background-image:linear-gradient(rgba(17,20,27,0.020) 1px, transpar
           <h3 class="sot-d-h sot-fade" id="sotH"></h3>
           <p class="sot-d-p sot-fade" id="sotP"></p>
           <div class="sot-d-doc sot-fade" id="sotDoc"></div>
+          <div class="sot-seal" id="sotSeal" aria-hidden="true">&#10003;&nbsp; FX-10293 verified, funded &amp; sealed in the record &middot; $4,800</div>
         </div>
       </div>
     </div>
@@ -861,6 +877,21 @@ body::after{ background-image:linear-gradient(rgba(17,20,27,0.020) 1px, transpar
     function show(i){ var d=SOT[i]; tag.textContent=d.tag; h.textContent=d.h; p.textContent=d.p; doc.textContent=d.doc; els.forEach(function(e){e.style.opacity="1";}); }
     function set(i){ btns.forEach(function(b,j){b.classList.toggle("on",j===i);}); els.forEach(function(e){e.style.opacity="0";}); setTimeout(function(){show(i);},170); }
     btns.forEach(function(b){ b.addEventListener("click",function(){ set(+b.dataset.i); }); });
+    var coin=document.getElementById("sotCoin"),traceBtn=document.getElementById("sotTrace"),seal=document.getElementById("sotSeal"),timer=null;
+    function moveCoin(i){var b=btns[i];coin.style.transform="translateY("+(b.offsetTop+b.offsetHeight/2-13)+"px)";}
+    function stopTrace(){if(timer){clearTimeout(timer);timer=null;}}
+    function trace(){
+      stopTrace();seal.classList.remove("show");btns.forEach(function(b){b.classList.remove("done");});
+      coin.classList.add("show");traceBtn.disabled=true;traceBtn.innerHTML="Tracing&hellip;";
+      var i=0;
+      (function step(){
+        set(i);moveCoin(i);btns.forEach(function(b,j){b.classList.toggle("done",j<i);});
+        if(i>=btns.length-1){btns.forEach(function(b){b.classList.add("done");});seal.classList.add("show");traceBtn.disabled=false;traceBtn.innerHTML="&#9654;&nbsp; Replay";return;}
+        i++;timer=setTimeout(step,1150);
+      })();
+    }
+    traceBtn.addEventListener("click",trace);
+    btns.forEach(function(b){b.addEventListener("click",function(){stopTrace();traceBtn.disabled=false;});});
     show(0);
   })();
   </script>
