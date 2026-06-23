@@ -836,9 +836,6 @@ body::after{ background-image:linear-gradient(rgba(17,20,27,0.020) 1px, transpar
   .sot-seal.show{display:block; animation:sealin .5s ease;}
   @keyframes sealin{from{opacity:0; transform:translateY(6px);}to{opacity:1; transform:none;}}
   @media(prefers-reduced-motion:reduce){ .sot-coin{transition:none;} }
-  .sot-detail.tracing{display:flex; flex-direction:column; justify-content:center;}
-  .sot-detail.tracing .sot-d-p,.sot-detail.tracing .sot-d-doc,.sot-detail.tracing .sot-seal{display:none;}
-  .sot-detail.tracing .sot-d-h{font-size:30px; line-height:1.2; margin-bottom:0;}
   </style>
   <section id="gb-sot-example" style="padding-top:0;">
     <div class="wrap">
@@ -880,21 +877,21 @@ body::after{ background-image:linear-gradient(rgba(17,20,27,0.020) 1px, transpar
     function show(i){ var d=SOT[i]; tag.textContent=d.tag; h.textContent=d.h; p.textContent=d.p; doc.textContent=d.doc; els.forEach(function(e){e.style.opacity="1";}); }
     function set(i){ btns.forEach(function(b,j){b.classList.toggle("on",j===i);}); els.forEach(function(e){e.style.opacity="0";}); setTimeout(function(){show(i);},170); }
     btns.forEach(function(b){ b.addEventListener("click",function(){ set(+b.dataset.i); }); });
-    var coin=document.getElementById("sotCoin"),traceBtn=document.getElementById("sotTrace"),seal=document.getElementById("sotSeal"),detail=document.querySelector(".sot-detail"),timer=null;
+    var coin=document.getElementById("sotCoin"),traceBtn=document.getElementById("sotTrace"),seal=document.getElementById("sotSeal"),timer=null;
     function moveCoin(i){var b=btns[i];coin.style.transform="translateY("+(b.offsetTop+b.offsetHeight/2-13)+"px)";}
     function stopTrace(){if(timer){clearTimeout(timer);timer=null;}}
     function trace(){
       stopTrace();seal.classList.remove("show");btns.forEach(function(b){b.classList.remove("done");});
-      coin.classList.add("show");detail.classList.add("tracing");traceBtn.disabled=true;traceBtn.innerHTML="Tracing&hellip;";
+      coin.classList.add("show");traceBtn.disabled=true;traceBtn.innerHTML="Tracing&hellip;";
       var i=0;
       (function step(){
         set(i);moveCoin(i);btns.forEach(function(b,j){b.classList.toggle("done",j<i);});
-        if(i>=btns.length-1){btns.forEach(function(b){b.classList.add("done");});detail.classList.remove("tracing");seal.classList.add("show");traceBtn.disabled=false;traceBtn.innerHTML="&#9654;&nbsp; Replay";return;}
-        i++;timer=setTimeout(step,1300);
+        if(i>=btns.length-1){btns.forEach(function(b){b.classList.add("done");});seal.classList.add("show");traceBtn.disabled=false;traceBtn.innerHTML="&#9654;&nbsp; Replay";return;}
+        i++;timer=setTimeout(step,1650);
       })();
     }
     traceBtn.addEventListener("click",trace);
-    btns.forEach(function(b){b.addEventListener("click",function(){stopTrace();detail.classList.remove("tracing");traceBtn.disabled=false;});});
+    btns.forEach(function(b){b.addEventListener("click",function(){stopTrace();traceBtn.disabled=false;});});
     show(0);
   })();
   </script>
