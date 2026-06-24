@@ -1404,8 +1404,8 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
   for(var i=0;i<E.length;i++){var e=E[i],prog=1;if(t<BUILD){var st=i*0.07;prog=Math.max(0,Math.min(1,(t-st)/0.55));}if(prog<=0)continue;var a=pv[e[0]],b=pv[e[1]];ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(a[0]+(b[0]-a[0])*prog,a[1]+(b[1]-a[1])*prog);ctx.stroke();}
   ctx.fillStyle="#c9a96e";for(var j=0;j<pv.length;j++){var vp=1;if(t<BUILD)vp=Math.max(0,Math.min(1,(t-j*0.05)/0.4));if(vp<=0)continue;ctx.globalAlpha=vp;ctx.beginPath();ctx.arc(pv[j][0],pv[j][1],2.3,0,6.3);ctx.fill();}ctx.globalAlpha=1;
  }
- function loop(ts){if(t0===null)t0=ts;frame((ts-t0)/1000);raf=requestAnimationFrame(loop);}
- function start(){if(raf)cancelAnimationFrame(raf);t0=null;if(reduce){resize();frame(8);}else{raf=requestAnimationFrame(loop);}}
+ var T0=0,timer=null;
+ function start(){if(timer)clearInterval(timer);resize();if(reduce){frame(8);return;}T0=performance.now();timer=setInterval(function(){frame((performance.now()-T0)/1000);},33);}
  resize();window.addEventListener("resize",resize);setTimeout(resize,200);setTimeout(resize,700);start();
 })();
 </script>
