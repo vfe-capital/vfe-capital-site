@@ -404,7 +404,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
 <!-- ============ VIEW: ABOUT ============ -->
 <div class="view" id="about">
   <style>
-  .vhero{position:relative; overflow:hidden; text-align:center; padding:clamp(78px,13vh,150px) 0 clamp(56px,9vh,104px); background:linear-gradient(180deg,#f7f2e7,#f1ebdc);}
+  .vhero{position:relative; overflow:hidden; text-align:center; padding:clamp(60px,8vh,110px) 0 clamp(46px,7vh,90px); min-height:clamp(620px,90vh,1000px); display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(180deg,#f7f2e7,#f1ebdc);}
   .herocube{position:absolute; inset:0; width:100%; height:100%; z-index:0;}
   .vhero .veng{position:absolute; inset:0; z-index:0; opacity:0.5;}
   .vhero .veng svg{width:100%; height:100%; display:block;}
@@ -682,7 +682,10 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
   #exchange-parallel .section-head{max-width:940px;}
   #exchange-parallel{position:relative; overflow:hidden;}
   #exchange-parallel > .wrap{position:relative; z-index:1;}
-  .hist-temple{position:absolute; left:0; right:0; top:0; height:560px; z-index:0; opacity:0.4; pointer-events:none; -webkit-mask-image:radial-gradient(130% 80% at 50% 30%, #000 28%, transparent 82%); mask-image:radial-gradient(130% 80% at 50% 30%, #000 28%, transparent 82%);}
+  .hist-hero{position:relative; overflow:hidden; padding:clamp(66px,10vh,124px) 0 clamp(52px,8vh,92px); background:linear-gradient(180deg, rgba(201,169,110,0.07), rgba(201,169,110,0) 80%);}
+  .hist-hero .wrap{position:relative; z-index:1;}
+  .hist-tl-wrap{margin-top:clamp(26px,5vh,62px);}
+  .hist-temple{position:absolute; inset:0; z-index:0; opacity:0.42; pointer-events:none; -webkit-mask-image:radial-gradient(125% 84% at 50% 36%, #000 32%, transparent 85%); mask-image:radial-gradient(125% 84% at 50% 36%, #000 32%, transparent 85%);}
   .hist-temple svg{width:100%; height:100%; display:block;}
   .hist-temple svg polygon,.hist-temple svg rect,.hist-temple svg line{stroke-dasharray:1; stroke-dashoffset:1; animation:histdraw 1.05s ease forwards;}
   @keyframes histdraw{to{stroke-dashoffset:0;}}
@@ -710,7 +713,8 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
   @media(max-width:680px){ .vtl-row{grid-template-columns:50px 1fr;} .vtl-yr{min-width:44px; height:44px; font-size:10px; padding:0 4px;} .vtl-content{padding-left:16px;} .vtl-spine::before{bottom:-16px;} }
   </style>
   <section id="exchange-parallel">
-    <div class="hist-temple" aria-hidden="true"><svg viewBox="0 0 1400 600" preserveAspectRatio="xMidYMax slice" fill="none" stroke="#9c7f4f" stroke-linejoin="round">
+    <div class="hist-hero">
+      <div class="hist-temple" aria-hidden="true"><svg viewBox="0 0 1400 600" preserveAspectRatio="xMidYMax slice" fill="none" stroke="#9c7f4f" stroke-linejoin="round">
         <polygon points="430,300 700,196 970,300" stroke-width="1.1" pathLength="1" style="animation-delay:1.25s"/>
         <polygon points="476,300 700,214 924,300" stroke-width="0.6" opacity="0.6" pathLength="1" style="animation-delay:1.25s"/>
         <rect x="430" y="300" width="540" height="34" stroke-width="1" pathLength="1" style="animation-delay:1.0s"/>
@@ -726,8 +730,9 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
         <line x1="368" y1="525" x2="1032" y2="525" stroke-width="1" pathLength="1" style="animation-delay:0.08s"/>
         <line x1="344" y1="545" x2="1056" y2="545" stroke-width="1.2" pathLength="1" style="animation-delay:0.13s"/>
       </svg></div>
-    <div class="wrap">
-      <div class="section-head center reveal"><span class="kicker center">History</span><h2>Stocks took two centuries<br>to become <span class="serif-accent">investable.</span></h2><p class="lead">They got there by trading paper and trust for proof and disclosure. VFE brings every one of those advances to freight factoring at once.</p></div>
+      <div class="wrap"><div class="section-head center reveal"><span class="kicker center">History</span><h2>Stocks took two centuries<br>to become <span class="serif-accent">investable.</span></h2><p class="lead">They got there by trading paper and trust for proof and disclosure. VFE brings every one of those advances to freight factoring at once.</p></div></div>
+    </div>
+    <div class="wrap hist-tl-wrap">
       <div class="vtl">
         <div class="vtl-rail" id="vtlRail" aria-hidden="true"></div><div class="vtl-rail-fill" id="vtlFill" aria-hidden="true"></div>
         <div class="vtl-row">
@@ -1380,7 +1385,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
 <script>
 (function(){
  var cv=document.getElementById("heroCube"); if(!cv)return; var ctx=cv.getContext("2d"),W=1,H=1,DPR=1;
- var V=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+ var V=[[-1.32,-1,-1],[1.32,-1,-1],[1.32,1,-1],[-1.32,1,-1],[-1.32,-1,1],[1.32,-1,1],[1.32,1,1],[-1.32,1,1]];
  var E=[[0,4],[1,5],[2,6],[3,7],[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4]];
  var F=[[4,5,6,7],[0,1,2,3],[1,5,6,2],[0,4,7,3],[3,2,6,7],[0,1,5,4]];
  var BAX=-0.5,BAY=0.62,BUILD=1.5,GAP=0.18,SPIN=3.2,FAX=-0.5+Math.PI*2,FAY=0.62+Math.PI*2+0.23,t0=null,raf=null;
@@ -1390,7 +1395,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
   c=Math.cos(ay);s=Math.sin(ay);t=x*c+z*s;z=-x*s+z*c;x=t;
   c=Math.cos(ax);s=Math.sin(ax);t=y*c-z*s;z=y*s+z*c;y=t;
   c=Math.cos(az);s=Math.sin(az);t=x*c-y*s;y=x*s+y*c;x=t;return [x,y,z];}
- function proj(p){var d=4.6,f=Math.min(W,H)*1.15,sc=f/(d-p[2]);return [W/2+p[0]*sc,H/2-p[1]*sc];}
+ function proj(p){var d=4.6,f=Math.min(W,H)*1.32,sc=f/(d-p[2]);return [W/2+p[0]*sc,H/2-p[1]*sc];}
  function frame(t){
   if(W<10){return;} ctx.clearRect(0,0,W,H);
   var ax,ay,az;
