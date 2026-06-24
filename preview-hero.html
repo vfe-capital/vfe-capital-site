@@ -379,7 +379,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
 }
 </style>
 <script>(function(){var ID="G-0F1XMEGHW8";if(ID.indexOf("XXXX")>-1)return;var x=document.createElement("script");x.async=1;x.src="https://www.googletagmanager.com/gtag/js?id="+ID;document.head.appendChild(x);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag("js",new Date());gtag("config",ID);})();</script>
-<style>.nav{position:fixed!important;left:0;right:0;transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .6s ease;}body:not(.vfe-go) .nav{transform:translateY(-100%);opacity:0;pointer-events:none;}.ticker{transition:opacity .7s ease,transform .7s ease;}body:not(.vfe-go) .ticker{opacity:0;transform:translateY(-12px);}.view:not(#about){padding-top:clamp(62px,8vh,82px);}</style>
+<style>.nav{position:fixed!important;left:0;right:0;transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .6s ease;}body:not(.vfe-go) .nav{transform:translateY(-100%);opacity:0;pointer-events:none;}.ticker{position:fixed!important;left:0;right:0;top:var(--navh,64px);z-index:48;margin-top:0!important;transition:transform .85s cubic-bezier(.4,0,.2,1);}body:not(.vfe-go) .ticker{transform:translateY(calc(-100% - var(--navh,64px) - 14px));}.view:not(#about){padding-top:clamp(62px,8vh,82px);}</style>
 </head>
 <body>
 
@@ -1415,6 +1415,6 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
  resize();window.addEventListener("resize",resize);setTimeout(resize,200);setTimeout(resize,700);start();
 })();
 </script>
-<script>(function(){function go(){document.body.classList.add("vfe-go");}setTimeout(go,5400);window.addEventListener("scroll",go,{once:true,passive:true});})();</script>
+<script>(function(){if("scrollRestoration" in history){history.scrollRestoration="manual";}try{window.scrollTo(0,0);}catch(e){}var nav=document.querySelector(".nav");function setH(){if(nav)document.documentElement.style.setProperty("--navh",nav.offsetHeight+"px");}setH();window.addEventListener("resize",setH);function go(){document.body.classList.add("vfe-go");}setTimeout(go,5400);setTimeout(function(){window.addEventListener("scroll",function(){if(window.scrollY>40){go();}},{passive:true});},900);})();</script>
 </body>
 </html>
