@@ -370,9 +370,10 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
 @media(max-width:640px){
   .nav-burger{display:inline-flex;}
   .nav-cta{display:none;}
-  .nav-links{position:absolute; left:0; right:0; top:100%; flex-direction:column; align-items:stretch; gap:0; padding:6px 0; background:rgba(255,255,255,0.985); -webkit-backdrop-filter:blur(16px) saturate(140%); backdrop-filter:blur(16px) saturate(140%); border-bottom:1px solid var(--border); box-shadow:0 26px 50px -26px rgba(17,20,27,0.28); display:none;}
+  .nav-links{position:absolute; left:0; right:0; top:100%; flex-direction:column; align-items:stretch; gap:0; padding:6px 0; background:rgba(13,16,22,0.985); -webkit-backdrop-filter:blur(16px) saturate(140%); backdrop-filter:blur(16px) saturate(140%); border-bottom:1px solid var(--border); box-shadow:0 26px 50px -26px rgba(0,0,0,0.55); display:none;}
   .nav.menu-open .nav-links{display:flex;}
-  .nav-links a{padding:15px 24px; font-size:16px; border-bottom:1px solid rgba(217,212,200,0.45);}
+  .nav-links a{padding:15px 24px; font-size:16px; border-bottom:1px solid var(--border);}
+  html[data-theme="light"] .nav-links{background:rgba(255,255,255,0.985); box-shadow:0 26px 50px -26px rgba(17,20,27,0.28);}
   .nav-links a:last-child{border-bottom:0;}
   .nav-links a::after{display:none;}
   .nav-links .m-only{display:block; color:var(--gold-deep); font-weight:500;}
@@ -459,40 +460,11 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
       <svg class="vorn" viewBox="0 0 150 14" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><line x1="0" y1="7" x2="60" y2="7" opacity="0.5"/><line x1="90" y1="7" x2="150" y2="7" opacity="0.5"/><path d="M66 7 L75 2 L84 7 L75 12 Z" fill="currentColor" stroke="none" opacity="0.85"/></svg>
       <p class="vsub">Bringing transparency, control, and standardization to <span style="white-space:nowrap">asset-based lending</span>.</p>
       <div class="hero-actions">
-        <a class="btn btn-gold" href="#about-what">How it works <span class="arrow">&rarr;</span></a>
+        <a class="btn btn-gold" href="#capital">Capital Providers <span class="arrow">&rarr;</span></a>
         <a class="btn btn-ghost" href="#carriers">For carriers</a>
-        <a class="btn btn-ghost" href="floor.html">Step onto the floor <span class="arrow">&rarr;</span></a>
       </div>
     </div>
   </section>
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span class="item"><span class="ar">&#9670;</span> Source of Truth</span>
-      <span class="item"><span class="ar">&#9670;</span> Real-time borrowing base</span>
-      <span class="item"><span class="ar">&#9670;</span> Loan-level transparency</span>
-      <span class="item"><span class="ar">&#9670;</span> Tamper-evident audit trail</span>
-      <span class="item"><span class="ar">&#9670;</span> Point-of-sale eligibility</span>
-      <span class="item"><span class="ar">&#9670;</span> Self-executing covenants</span>
-      <span class="item"><span class="ar">&#9670;</span> Lockbox and cash dominion</span>
-      <span class="item"><span class="ar">&#9670;</span> Replayable underwriting</span>
-      <span class="item"><span class="ar">&#9670;</span> Continuous reporting</span>
-      <span class="item"><span class="ar">&#9670;</span> Lender-held kill switch</span>
-      <span class="item"><span class="ar">&#9670;</span> Source-verified collateral</span>
-      <span class="item"><span class="ar">&#9670;</span> Verification, not sampling</span>
-      <span class="item"><span class="ar">&#9670;</span> Source of Truth</span>
-      <span class="item"><span class="ar">&#9670;</span> Real-time borrowing base</span>
-      <span class="item"><span class="ar">&#9670;</span> Loan-level transparency</span>
-      <span class="item"><span class="ar">&#9670;</span> Tamper-evident audit trail</span>
-      <span class="item"><span class="ar">&#9670;</span> Point-of-sale eligibility</span>
-      <span class="item"><span class="ar">&#9670;</span> Self-executing covenants</span>
-      <span class="item"><span class="ar">&#9670;</span> Lockbox and cash dominion</span>
-      <span class="item"><span class="ar">&#9670;</span> Replayable underwriting</span>
-      <span class="item"><span class="ar">&#9670;</span> Continuous reporting</span>
-      <span class="item"><span class="ar">&#9670;</span> Lender-held kill switch</span>
-      <span class="item"><span class="ar">&#9670;</span> Source-verified collateral</span>
-      <span class="item"><span class="ar">&#9670;</span> Verification, not sampling</span>
-    </div>
-  </div>
   <div class="wrap"><div class="divider"></div></div>
   <style>
   .how-grid{display:grid; grid-template-columns:1fr 0.92fr; gap:clamp(32px,5vw,64px); align-items:center; margin-top:6px;}
@@ -542,7 +514,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
         <span class="kicker">Why now</span>
         <h2>We have seen this story before.</h2>
         <p>Equities went from paper, opacity, and bucket-shop fraud to disclosure, central clearing, and electronic transparency. Freight factoring is still in its paper era: faxed documents, trust-me underwriting, and fraud that hides in the gaps. <strong>VFE is the digitization, verification, and transparency moment for factoring.</strong></p>
-        <div style="margin-top:30px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;"><a class="btn btn-gold" href="floor.html">Step onto the floor <span class="arrow">&rarr;</span></a><a class="btn btn-ghost" href="#exchange">Read the full parallel <span class="arrow">&rarr;</span></a></div>
+        <div style="margin-top:30px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;"><a class="btn btn-gold" href="#exchange">Read the full parallel <span class="arrow">&rarr;</span></a></div>
       </div>
     </div>
   </section>
@@ -572,7 +544,6 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
         <div class="hero-actions">
           <a class="btn btn-gold" href="#carriers-contact">Get early access <span class="arrow">&rarr;</span></a>
           <a class="btn btn-ghost" href="#carriers-how">How it works</a>
-          <a class="btn btn-ghost" href="floor.html">Step onto the floor <span class="arrow">&rarr;</span></a>
         </div>
         <p class="hero-trust">No contracts to trap you &middot; No mystery fees &middot; Funded fast</p>
       </div>
@@ -764,7 +735,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
   </section>
   <section id="exchange-resolution" style="padding-top:clamp(46px,6vw,84px);">
     <div class="wrap">
-      <div class="band center reveal"><span class="kicker center">The resolution</span><h2>What the exchange did for stocks,<br><span class="serif-accent">VFE does for factoring.</span></h2><p>The same three things that turned equities into a real market are what VFE runs on: <strong>disclosure</strong>, the whole book live; a <strong>single source of truth</strong>, every claim traced to an unfakeable document; and <strong>enforcement in code</strong>, checked on every transaction. That is the glass box.</p><div style="margin-top:30px;"><a class="btn btn-gold" href="#glass-box">See the glass box <span class="arrow">&rarr;</span></a><a class="btn btn-ghost" href="floor.html">Step onto the floor <span class="arrow">&rarr;</span></a></div></div>
+      <div class="band center reveal"><span class="kicker center">The resolution</span><h2>What the exchange did for stocks,<br><span class="serif-accent">VFE does for factoring.</span></h2><p>The same three things that turned equities into a real market are what VFE runs on: <strong>disclosure</strong>, the whole book live; a <strong>single source of truth</strong>, every claim traced to an unfakeable document; and <strong>enforcement in code</strong>, checked on every transaction. That is the glass box.</p><div style="margin-top:30px;"><a class="btn btn-gold" href="#glass-box">See the glass box <span class="arrow">&rarr;</span></a></div></div>
     </div>
   </section>
 </div>
@@ -780,7 +751,6 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
         <div class="hero-actions">
           <a class="btn btn-gold" href="#gb-sot">How it works <span class="arrow">&rarr;</span></a>
           <a class="btn btn-ghost" href="#capital">For capital partners</a>
-          <a class="btn btn-ghost" href="floor.html">Step onto the floor <span class="arrow">&rarr;</span></a>
         </div>
       </div>
       <div class="hero-visual">
@@ -1066,10 +1036,14 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
   .hold-row h3{font-family:var(--font-display); font-weight:600; font-size:18.5px; color:var(--text); margin:0 0 5px; letter-spacing:-0.3px;}
   .hold-row p{font-size:14.5px; line-height:1.6; color:var(--text-2); margin:0; max-width:64ch;}
   @media(max-width:560px){ .hold-row{grid-template-columns:32px 1fr; gap:13px;} .hold-row .hico{width:22px; height:22px;} }
-  .powerstrip{text-align:center; padding:6px 0;}
-  .powerstrip .pw{font-family:var(--font-display); font-weight:600; font-size:clamp(22px,3.1vw,34px); letter-spacing:-0.5px; color:var(--text);}
-  .powerstrip .sep{color:var(--gold); margin:0 clamp(8px,1.4vw,16px); font-family:var(--font-display); font-size:clamp(20px,2.8vw,30px);}
-  .powerstrip .sub{display:block; margin-top:16px; font-family:var(--font-mono); font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:var(--text-3);}
+  .powerstrip{text-align:center; padding:6px 0; display:flex; flex-wrap:wrap; align-items:baseline; justify-content:center; column-gap:0; row-gap:4px;}
+  .powerstrip .pw{font-family:var(--font-display); font-weight:600; font-size:clamp(20px,3.1vw,34px); letter-spacing:-0.5px; color:var(--text); white-space:nowrap;}
+  .powerstrip .sep{color:var(--gold); margin:0 clamp(8px,1.4vw,16px); font-family:var(--font-display); font-size:clamp(18px,2.8vw,30px);}
+  .powerstrip .sub{flex-basis:100%; display:block; margin-top:16px; font-family:var(--font-mono); font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:var(--text-3);}
+  @media(max-width:480px){
+    .powerstrip .sep{display:none;}
+    .powerstrip .pw{flex-basis:100%; font-size:24px;}
+  }
   </style>
   <section id="cap-controls">
     <div class="wrap">
@@ -1373,3 +1347,4 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
 <script>(function(){var b=document.getElementById("themeToggle");if(!b)return;var mc=document.querySelector('meta[name="theme-color"]');function meta(t){if(mc)mc.setAttribute("content",t==="light"?"#faf8f3":"#0a0c10");}meta(document.documentElement.getAttribute("data-theme")||"light");b.addEventListener("click",function(){var cur=document.documentElement.getAttribute("data-theme")==="dark"?"dark":"light";var n=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",n);try{localStorage.setItem("vfe-theme",n);}catch(e){}meta(n);});})();</script>
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
