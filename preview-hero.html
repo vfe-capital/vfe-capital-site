@@ -379,7 +379,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
 }
 </style>
 <script>(function(){var ID="G-0F1XMEGHW8";if(ID.indexOf("XXXX")>-1)return;var x=document.createElement("script");x.async=1;x.src="https://www.googletagmanager.com/gtag/js?id="+ID;document.head.appendChild(x);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag("js",new Date());gtag("config",ID);})();</script>
-<style>.nav{opacity:0;transform:translateY(-8px);transition:opacity .7s ease,transform .7s ease;pointer-events:none;}.nav.nav-shown{opacity:1;transform:none;pointer-events:auto;}</style>
+<style>.nav{position:fixed!important;left:0;right:0;transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .6s ease;}body:not(.vfe-go) .nav{transform:translateY(-100%);opacity:0;pointer-events:none;}.ticker{transition:opacity .7s ease,transform .7s ease;}body:not(.vfe-go) .ticker{opacity:0;transform:translateY(-12px);}.view:not(#about){padding-top:clamp(62px,8vh,82px);}</style>
 </head>
 <body>
 
@@ -1396,7 +1396,7 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
   c=Math.cos(ay);s=Math.sin(ay);t=x*c+z*s;z=-x*s+z*c;x=t;
   c=Math.cos(ax);s=Math.sin(ax);t=y*c-z*s;z=y*s+z*c;y=t;
   c=Math.cos(az);s=Math.sin(az);t=x*c-y*s;y=x*s+y*c;x=t;return [x,y,z];}
- function proj(p){var d=4.6,f=Math.min(W,H)*1.28,sc=f/(d-p[2]);return [W/2+p[0]*sc,H/2-p[1]*sc];}
+ function proj(p){var d=4.6,f=Math.min(W,H)*1.28,sc=f/(d-p[2]);return [W/2-Math.min(W,H)*0.05+p[0]*sc,H/2-p[1]*sc];}
  function frame(t){
   if(W<10){return;} ctx.clearRect(0,0,W,H);
   var ax,ay,az;
@@ -1415,6 +1415,6 @@ html[data-theme="light"] .theme-toggle .ti-moon{display:inline-block;}
  resize();window.addEventListener("resize",resize);setTimeout(resize,200);setTimeout(resize,700);start();
 })();
 </script>
-<script>(function(){var n=document.querySelector(".nav");if(!n)return;function show(){n.classList.add("nav-shown");}setTimeout(show,5200);window.addEventListener("scroll",show,{once:true,passive:true});})();</script>
+<script>(function(){function go(){document.body.classList.add("vfe-go");}setTimeout(go,5400);window.addEventListener("scroll",go,{once:true,passive:true});})();</script>
 </body>
 </html>
