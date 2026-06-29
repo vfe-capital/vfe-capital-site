@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VFE - The Invoice Life Cycle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--paper:#faf8f3;--ink:#11141b;--gold:#c9a96e;--gold-deep:#8a7548;--muted:#6a7180;--border:#e2dcce;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+.optbar{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:99;display:flex;gap:8px;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:30px;padding:6px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;}
+.optbar a{padding:6px 14px;border-radius:30px;color:var(--gold-deep);text-decoration:none;text-transform:uppercase;}
+.optbar a.on{background:var(--gold);color:#2b2410;}
+.intro{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.kick{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:20px;}
+.intro h1{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-1px;margin:0;max-width:15ch;}
+.intro h1 em{font-style:italic;color:var(--gold-deep);}
+.intro p{font-size:clamp(16px,1.7vw,19px);color:#494f5c;max-width:50ch;margin:22px auto 0;line-height:1.55;}
+.scrollcue{margin-top:40px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;animation:bob 2s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+.outro{min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.outro h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(34px,5vw,58px);margin:0;letter-spacing:-.5px;}
+.outro h2 em{font-style:italic;color:var(--gold-deep);}
+.outro p{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--muted);margin-top:18px;text-transform:uppercase;}
+@keyframes vin{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:none;}}
+.gbx-scroll{position:relative;height:780vh;}
+.gbx-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+.gbx-h{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:46px;text-align:center;}
+.gbx-stage{display:grid;grid-template-columns:1fr 230px 1fr;gap:44px;align-items:stretch;max-width:1180px;width:100%;padding:0 40px;}
+.gbx-panel{border-radius:20px;padding:40px 38px;min-height:400px;display:flex;flex-direction:column;}
+.gbx-black{background:#0b0e13;border:1px solid #1f242e;}
+.gbx-glass{background:linear-gradient(160deg,#ffffff,#f3efe6);border:1px solid var(--border);box-shadow:0 38px 90px -46px rgba(17,20,27,.30);}
+.gbx-tag{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:9px;}
+.gbx-black .gbx-tag{color:#5f6775;}.gbx-glass .gbx-tag{color:var(--gold-deep);}
+.gbx-dot{width:7px;height:7px;border-radius:50%;}
+.gbx-black .gbx-dot{background:#3a4150;}.gbx-glass .gbx-dot{background:var(--gold);box-shadow:0 0 8px rgba(201,169,110,.6);}
+.gbx-body{transition:opacity .26s ease, transform .26s ease;display:flex;flex-direction:column;flex:1;}
+.auto-tag{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-deep);background:rgba(201,169,110,.13);border:1px solid rgba(201,169,110,.32);border-radius:30px;padding:6px 13px;margin-bottom:18px;}
+.gbx-body h3{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:28px;line-height:1.12;margin:0 0 16px;}
+.gbx-black .gbx-body h3{color:#c4c9d2;}.gbx-glass .gbx-body h3{color:var(--ink);}
+.gbx-body p{font-size:15.5px;line-height:1.65;margin:0;}
+.gbx-black .gbx-body p{color:#8b93a1;}.gbx-glass .gbx-body p{color:#494f5c;}
+.redact{display:flex;flex-direction:column;gap:11px;margin-top:auto;padding-top:30px;}
+.redact span{height:12px;border-radius:3px;background:#1b212c;}
+.verified{margin-top:auto;padding-top:30px;display:flex;flex-direction:column;gap:12px;}
+.verified div{display:flex;align-items:center;gap:10px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.4px;color:var(--gold-deep);opacity:0;animation:vin .5s ease forwards;}
+.verified div:nth-child(1){animation-delay:.06s;}.verified div:nth-child(2){animation-delay:.16s;}.verified div:nth-child(3){animation-delay:.26s;}
+.verified svg{width:15px;height:15px;flex:none;}
+.gbx-list{display:flex;flex-direction:column;justify-content:center;gap:17px;text-align:center;}
+.gbx-item{font-family:'Fraunces',Georgia,serif;font-size:20px;color:#c4bca9;opacity:.45;transition:color .35s ease,opacity .35s ease,transform .35s ease;line-height:1.1;}
+.gbx-item.on{color:var(--ink);opacity:1;transform:scale(1.13);}
+.gbx-count{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--muted);margin-top:14px;}
+.gbx-prog{height:2px;background:var(--border);border-radius:2px;margin:16px auto 0;width:160px;position:relative;overflow:hidden;}
+.gbx-prog i{position:absolute;left:0;top:0;bottom:0;background:var(--gold);width:0;transition:width .15s linear;}
+@media(max-width:880px){.gbx-stage{grid-template-columns:1fr;gap:16px;}.gbx-list{order:-1;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px 16px;}.gbx-item{font-size:14px;}.gbx-panel{min-height:0;}.redact,.verified{margin-top:24px;}}
+</style>
+</head>
+<body>
+<section class="intro"><div class="wrap">
+  <div class="kick">The Invoice Life Cycle</div>
+  <h1>Follow one load from <em>delivery to paid.</em></h1>
+  <p>An invoice passes through six hands before it settles. Everywhere else, each step is manual and opaque. Scroll, and watch the Glass Box automate every one - in the open.</p>
+  <div class="scrollcue">Scroll &darr;</div>
+</div></section>
+<section class="gbx-scroll" id="gbxScroll"><div class="gbx-pin">
+  <div class="gbx-h">The old way &middot; and the Glass Box, step by step</div>
+  <div class="gbx-stage">
+    <div class="gbx-panel gbx-black"><div class="gbx-tag"><span class="gbx-dot"></span>Black box</div><div class="gbx-body" id="blackBody"></div></div>
+    <div class="gbx-list">
+      <div id="gbxList">
+        <div class="gbx-item">Delivered</div><div class="gbx-item">Submitted</div><div class="gbx-item">Verified</div><div class="gbx-item">Funded</div><div class="gbx-item">Collected</div><div class="gbx-item">Closed</div>
+      </div>
+      <div class="gbx-count" id="gbxCount">01 / 06</div>
+      <div class="gbx-prog"><i id="gbxProg"></i></div>
+    </div>
+    <div class="gbx-panel gbx-glass"><div class="gbx-tag"><span class="gbx-dot"></span>The Glass Box</div><div class="gbx-body" id="glassBody"></div></div>
+  </div>
+</div></section>
+<section class="outro"><div class="wrap"><h2>One invoice. <em>Every step, in the open.</em></h2><p>From the load to the ledger</p></div></section>
+<script>
+var CK='<svg viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2"><path d="M5 12.5l4 4L19 7"/></svg>';
+var BOLT='<svg viewBox="0 0 24 24" fill="#8a7548"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>';
+var DATA=[
+ {bh:"Paper starts piling up",bp:"The bill of lading, the rate confirmation, the proof of delivery - scattered across an inbox, a fax tray, a truck cab.",auto:"Captured at delivery",gh:"Captured the moment it moves",gp:"Every document lands in software when the load is delivered, attached to the invoice and ready to verify.",v:["Bill of lading","Rate confirmation","Proof of delivery"]},
+ {bh:"Re-keyed by hand",bp:"A carrier emails a packet and someone types it in. Every transcription is a chance for an error to enter the book.",auto:"Parsed automatically",gh:"Read in, never retyped",gp:"Submitted once and parsed straight into structured data - no re-keying, no transcription drift.",v:["Structured at intake","No manual entry","No transcription error"]},
+ {bh:"A glance and a phone call",bp:"A clerk eyeballs the documents and dials a number or two. Fraud and double-brokering slip through the gaps.",auto:"Verified at the source",gh:"Checked at the source",gp:"The BOL matches the rate con, the POD is signed and timestamped, the carrier authority is active - confirmed every time.",v:["Cross-checked","Authority active","Network-screened"]},
+ {bh:"Waiting on a person",bp:"Approval sits in a queue. Funding can take a day, sometimes three, while the carrier waits on fuel and payroll.",auto:"Funded by rule",gh:"Cleared by rule, fast",gp:"Eligibility is gated at origination. The moment an invoice clears the checks it funds - no closing day, no queue.",v:["Rule-gated","No closing day","Fast to cash"]},
+ {bh:"Cash lands somewhere",bp:"The debtor pays on net terms and the money is reconciled later, by hand, against a report someone assembles.",auto:"Auto-reconciled",gh:"Lockbox, auto-matched",gp:"Payment flows through a lockbox on a defined waterfall and matches to the invoice on the same live ledger as the book.",v:["Lockbox","Defined waterfall","Live ledger"]},
+ {bh:"Closed at month-end",bp:"The reserve releases when someone gets to it. The true state of the book is a report you wait for.",auto:"Reserve auto-released",gh:"Closed on the rule",gp:"The reserve releases the moment collection clears, by rule. The book is live and replayable, not a month-end PDF.",v:["Released on clear","Replayable","Always live"]}
+];
+var N=DATA.length,cur=-1;
+var items=[].slice.call(document.querySelectorAll('#gbxList .gbx-item'));
+var blackBody=document.getElementById('blackBody'),glassBody=document.getElementById('glassBody');
+var prog=document.getElementById('gbxProg'),count=document.getElementById('gbxCount'),sec=document.getElementById('gbxScroll');
+function render(i){var d=DATA[i];
+ blackBody.innerHTML='<h3>'+d.bh+'</h3><p>'+d.bp+'</p><div class="redact"><span style="width:88%"></span><span style="width:60%"></span><span style="width:73%"></span></div>';
+ glassBody.innerHTML='<span class="auto-tag">'+BOLT+'Automated &middot; '+d.auto+'</span><h3>'+d.gh+'</h3><p>'+d.gp+'</p><div class="verified">'+d.v.map(function(x){return '<div>'+CK+x+'</div>';}).join('')+'</div>';
+ count.textContent='0'+(i+1)+' / 0'+N;}
+function setActive(i){if(i===cur)return;var first=cur===-1;cur=i;
+ items.forEach(function(el,j){el.classList.toggle('on',j===i);});
+ if(first){render(i);return;}
+ [blackBody,glassBody].forEach(function(b){b.style.opacity=0;b.style.transform='translateY(8px)';});
+ setTimeout(function(){render(i);[blackBody,glassBody].forEach(function(b){b.style.opacity=1;b.style.transform='none';});},210);}
+function onScroll(){var r=sec.getBoundingClientRect();var range=sec.offsetHeight-window.innerHeight;
+ var p=range>0?Math.min(Math.max(-r.top,0),range)/range:0;prog.style.width=(p*100)+'%';
+ setActive(Math.max(0,Math.min(N-1,Math.floor(p*N*0.999))));}
+render(0);items[0].classList.add('on');cur=0;
+window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);onScroll();
+</script>
+</body></html>
