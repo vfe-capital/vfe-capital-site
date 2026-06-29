@@ -1450,7 +1450,7 @@ This machine-readable view is also published at https://vfe.capital/llms.txt and
    if(/^### /.test(ln)){cl();out.push('<h3>'+e.slice(4)+'</h3>');}
    else if(/^## /.test(ln)){cl();out.push('<h2>'+e.slice(3)+'</h2>');}
    else if(/^# /.test(ln)){cl();out.push('<h1>'+e.slice(2)+'</h1>');}
-   else if(/^> /.test(ln)){cl();out.push('<blockquote>'+e.slice(2)+'</blockquote>');}
+   else if(/^> /.test(ln)){cl();out.push('<blockquote>'+esc(ln.slice(2))+'</blockquote>');}
    else if(/^- /.test(ln)){if(!inl||tag!=='ul'){cl();out.push('<ul>');inl=true;tag='ul';}out.push('<li>'+e.slice(2)+'</li>');}
    else if((m=ln.match(/^(\d+)\. (.*)$/))){if(!inl||tag!=='ol'){cl();out.push('<ol>');inl=true;tag='ol';}out.push('<li>'+esc(m[2])+'</li>');}
    else if(/^---\s*$/.test(ln)){cl();out.push('<hr>');}
