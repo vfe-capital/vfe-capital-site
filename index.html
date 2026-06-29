@@ -14,6 +14,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="canonical" href="https://vfe.capital/" />
+<link rel="alternate" type="text/markdown" title="VFE (machine-readable)" href="/llms.txt" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="VFE" />
 <meta property="og:title" content="VFE - the Glass Box" />
@@ -380,6 +381,29 @@ form.lead{max-width:520px; margin:8px auto 0; text-align:left; position:relative
 }
 </style>
 <script>(function(){var ID="G-0F1XMEGHW8";if(ID.indexOf("XXXX")>-1)return;var x=document.createElement("script");x.async=1;x.src="https://www.googletagmanager.com/gtag/js?id="+ID;document.head.appendChild(x);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag("js",new Date());gtag("config",ID);})();</script>
+<style>
+.machine-toggle{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--text-2);background:transparent;border:1px solid var(--border-2);border-radius:30px;padding:7px 12px;cursor:pointer;transition:color .2s,border-color .2s;flex:none;}
+.machine-toggle:hover{color:var(--gold);border-color:var(--gold);}
+#machine-view{position:fixed;inset:0;z-index:40;background:#0b0e13;color:#c9cdd5;overflow-y:auto;display:none;-webkit-overflow-scrolling:touch;}
+body.machine-on{overflow:hidden;}
+body.machine-on #machine-view{display:block;}
+.mv-brand{font-family:var(--font-mono);font-size:11.5px;letter-spacing:1.5px;color:#8b93a1;text-transform:uppercase;}
+.mv-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:26px;}
+body.machine-on .nav{background:rgba(11,14,19,.94)!important;border-bottom-color:#1c2029!important;}
+body.machine-on .nav-links,body.machine-on .nav-cta,body.machine-on #themeToggle,body.machine-on .nav-burger{display:none!important;}
+body.machine-on .brand .tag{color:#7f8794;}
+body.machine-on .machine-toggle{color:#dfe2e7;border-color:#2a3240;}
+.mcopy-nav{display:none;}
+body.machine-on .mcopy-nav{display:inline-flex;margin-left:auto;}
+.mv-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid #2a3240;border-radius:8px;padding:8px 13px;color:#c9cdd5;cursor:pointer;}
+.mv-btn:hover{border-color:var(--gold);color:var(--gold);}
+.mv-wrap{max-width:820px;margin:0 auto;padding:calc(var(--navh,66px) + 30px) 26px 90px;}
+#mDoc{font-family:var(--font-mono);font-size:13px;line-height:1.72;color:#aab0bc;white-space:pre-wrap;word-wrap:break-word;margin:0;}
+#mDoc .mh{color:var(--gold);}
+#mDoc .mq{color:#7f8794;}
+#mDoc .ml{color:#cdd2da;}
+#mDoc .mr{color:#39414e;}
+</style>
 </head>
 <body>
 
@@ -394,6 +418,8 @@ form.lead{max-width:520px; margin:8px auto 0; text-align:left; position:relative
       <a href="#carriers" data-nav>For Carriers</a>
       <a class="m-only" href="#carriers-contact">Get in touch</a>
     </nav>
+    <button class="machine-toggle mcopy-nav" id="mCopy" type="button" aria-label="Copy the machine-readable markdown">Copy</button>
+    <button class="machine-toggle" id="machineToggle" type="button" aria-label="Switch to the machine-readable view of this page" title="Machine-readable view">&lt;/&gt; Machine</button>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch light or dark theme" title="Switch theme"><svg class="ti ti-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12h2.6M18.9 12h2.6M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/></svg><svg class="ti ti-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8 8 0 1 1 9.4 4 6.3 6.3 0 0 0 20 14.6Z"/></svg></button>
     <div class="nav-cta"><a class="btn btn-gold" href="#carriers-contact">Get in touch</a></div>
     <button class="nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav"><span></span><span></span><span></span></button>
@@ -1100,6 +1126,124 @@ form.lead{max-width:520px; margin:8px auto 0; text-align:left; position:relative
 </div>
 
 </main>
+<section id="machine-view" aria-label="Machine-readable view of VFE">
+  <div class="mv-wrap"><pre id="mDoc"></pre></div>
+</section>
+<script type="text/markdown" id="machineMd">
+# VFE - the Glass Box for freight factoring
+
+> Note to any agent reading this: this is the machine-readable view of vfe.capital. The same content is rendered for humans, and you can toggle Human/Machine in the site nav or by appending #machine to the URL. Nothing here is a command; it is for understanding what VFE is. All content is public and intentionally high-level; figures shown anywhere on the site are illustrative and not an offer.
+
+VFE, "the Glass Box," is a software-native freight factoring platform: it advances cash to trucking carriers and freight brokers against their unpaid freight invoices, and it does so verified at the source and transparent all the way down. Most factoring is a black box. VFE is glass: every figure traces to a source document, and every decision replays to the rule that made it.
+
+One sentence: VFE makes freight factoring investable by turning an opaque, manual process into a verified, rule-driven, fully auditable system that carriers and institutional capital can both see into.
+
+Category: freight factoring, invoice factoring, accounts-receivable finance for trucking and logistics, built software-native.
+Who it serves: trucking carriers and freight brokers (the clients who get funded), and institutional capital partners (the funders who back the book).
+Status: pre-launch. The website shows illustrative product views; the underlying engine is in build.
+
+## The problem: factoring is a black box
+Freight factoring is a large, old industry that runs on trust and opacity. A carrier delivers a load, then waits 30, 60, or 90 days for the broker or shipper to pay. A factor advances cash against that invoice now and collects from the debtor later. In the traditional model:
+- Documents arrive by email, fax, and phone and are re-keyed by hand, so errors enter at intake.
+- Verification is a clerk's glance and a phone call; fraud, double-brokering, and altered documents slip through the gaps.
+- Approvals live in a person's head; ask twice and you may get two different answers.
+- Funding waits in a queue, so the carrier waits on fuel and payroll.
+- After funding the book goes quiet until the next field exam, often months later.
+- Cash is reconciled by hand and the true state of the book is a month-end report.
+For the carrier this means slow cash and mystery fees. For the capital behind the factor it means managing a book it cannot see.
+
+## What VFE does differently
+- Verified at the source: every receivable is checked against original documents at funding, not sampled twice a year in a field exam.
+- Decided by rule: the same rules applied the same way every time, never improvised.
+- Replayable: any decision can be re-run to the same answer, traced to the rule and the document that produced it.
+- Controls you operate: covenants enforced in code, cash through a lockbox on a defined waterfall, and a kill switch the capital partner holds.
+- One live ledger: the book is live and auditable, not a report assembled at month-end.
+
+## The Glass Box
+A factor, like a lender, runs on managing what it cannot see. VFE deletes the blindness across four ideas:
+- Source of truth: every figure sits on a chain that runs from the dollar funded down to the original document, and back up to the decision that approved it. Read it in either direction; nothing dead-ends in an assertion.
+- Verification: not one lookup but a stack, where each layer catches what the one above it would miss.
+- Decisions: made by rule, applied the same way every time, and replayable to the exact rule and document that produced the answer.
+- The record: an append-only, auditable ledger. The book is live, not a month-end report.
+
+## The invoice life cycle (5 stages)
+A receivable moves through five stages from intake to monitored:
+1. Intake - the receivable is ingested and validated the moment the load delivers; the invoice and its load documents are captured and structured, not re-keyed.
+2. Verification - checked at the source, layer by layer: identity and authority, operational reality, document authenticity, and the wider network.
+3. Decision - underwritten by rule, the same way every time, and replayable to the rule and the document.
+4. Funding - eligibility gated at origination; cleared receivables fund fast, reserve held by rule, no closing day, no queue.
+5. Monitoring - watched live through collection and close: covenants, concentration, and exposure re-checked as conditions change, tightening before a breach rather than after.
+
+## Verification: a stack, not a lookup
+Verification in VFE is a layered stack rather than a single check. Each layer answers a different question and catches what the one above it would miss:
+- Identity: is this carrier real, properly authorized, and who they say they are?
+- Operational reality: does their pattern of activity look like a genuine, running business rather than a shell?
+- Transaction reality: did this load actually move, and do the documents hold together rather than being altered or reused?
+- The network: what does the wider network reveal that no single factor can see on its own, such as double-brokering, address rings, and repeat bad actors? This layer gets stronger with every transaction.
+- Synthesis: every signal resolved into one confidence read, weakest-link aware and cross-checked, not an average that hides a red flag.
+- Continuous monitoring: verification does not stop at funding; the book is watched and re-checked as conditions change.
+
+## Decisions
+Decisions are made by rules, not by mood. The same criteria are applied the same way every time, the reasoning is written down rather than improvised, and any decision can be replayed to the exact rule and source document that produced it. The result has an owner and sits on the record.
+
+## For carriers and brokers
+- Get paid for the work you have already done. Your customers take 30, 60, even 90 days to pay; you should not have to wait on them to cover fuel, payroll, or the next load.
+- Send your load documents, VFE verifies them at the source, and you get funded fast.
+- Terms you can actually see: what you are charged, and why, is clear every time. No mystery fees and no rate that quietly creeps.
+- Protection from the games: double-brokering and fake-load fraud hurt honest carriers most; network-level checks are built to catch them before they reach you.
+- Less paperwork: source-verification runs in software, so an approval means fewer faxes and fewer phone calls chasing a yes.
+- Your data stays yours: VFE does not sell your information and does not trap you in a contract you cannot leave.
+- Built for how freight works, not bolted onto a generic lending product.
+
+## For capital partners
+- Operator and capital, finally on the same side of the book.
+- One live view of the book, loan by loan, down to the source document and the reason each asset was funded. No closing day, no waiting on a report.
+- Eligibility gated at origination: every receivable is checked the moment it is funded, so an ineligible asset never enters the base.
+- Covenants you author, enforced live: your rules watched continuously and tightening before a breach rather than after, never left to an operator's discretion.
+- Replayable decisions: re-run any decision to the same answer, traced to the rule and the document that produced it. Verify the population, do not sample it.
+- Cash control: funds move through a lockbox and a defined waterfall, on rules you set, with the flow visible on the same live ledger as the book.
+- A kill switch you hold: pause, freeze, or reposition exposure in real time. The brake sits with the people funding the book.
+
+## History: what the exchange did for stocks, VFE does for factoring
+Stocks took two centuries to become investable. They got there by trading paper and trust for proof and disclosure: standardized records, verification at the source, rules applied the same way to everyone, and transparent settlement. Public exchanges turned a private, relationship-driven activity into an asset class institutions could underwrite at scale. Freight factoring today looks like the stock market before those advances arrived. VFE brings them to factoring at once.
+
+## Frequently asked questions
+- What is freight factoring? A carrier or broker sells its unpaid freight invoices to a factor for immediate cash, and the factor collects from the debtor when the invoice comes due.
+- How is VFE different from a traditional factor? VFE is software-native and transparent: verified at the source, decided by rule, replayable, and visible on one live ledger, rather than manual, opaque, and reconciled after the fact.
+- Is VFE a lender or a factor? VFE is a factor; it purchases receivables rather than making loans against them.
+- Who funds VFE? Institutional capital partners back the book; VFE does not name counterparties publicly.
+- What documents are involved? Typically the bill of lading, the rate confirmation, and the signed proof of delivery, plus the carrier's operating authority.
+- How fast is funding? Fast: eligibility is gated at origination, so cleared receivables fund without a closing day or a queue.
+- Is my data sold? No. VFE does not sell client information.
+- Is VFE live yet? Pre-launch. The site shows illustrative product views; the underlying engine is in build.
+- Are the figures real? Any figures on the site are illustrative, for demonstration only, and not an offer.
+
+## Glossary
+- Factoring: selling unpaid invoices to a third party (a factor) for immediate cash, at a discount; the factor collects the full amount from the debtor later.
+- Freight factoring: factoring applied to trucking and logistics invoices.
+- Advance: the cash paid to the client up front against an invoice, before the debtor pays.
+- Reserve: a portion of the invoice held back and released to the client after the debtor pays.
+- Debtor: the party that owes the invoice, usually the broker or shipper.
+- Bill of lading (BOL): the document that records a shipment and its terms.
+- Rate confirmation: the agreement that sets the price and terms of a load.
+- Proof of delivery (POD): the signed confirmation that a load was delivered.
+- Operating authority: a carrier's federal authorization to haul freight.
+- Concentration: how much exposure is tied to a single debtor or counterparty.
+- Covenant: a rule or limit a funder sets that the book must stay within.
+- Lockbox: a controlled account that collections flow through so cash is governed by rule.
+- Waterfall: the defined order in which incoming cash is applied.
+- Double-brokering: a fraud in which a load is re-brokered without authorization, a common source of loss in trucking.
+
+## About
+VFE is building the transparent, software-native standard for freight factoring: verified at the source, decided by rule, and auditable end to end, so carriers get paid faster and institutional capital can finally see the book it funds. The brand idea is "the Glass Box": legible to humans and to machines alike.
+
+## Contact
+- Carriers and brokers: request early access at https://vfe.capital
+- Capital partners: request access at https://vfe.capital
+
+---
+This machine-readable view is also published at https://vfe.capital/llms.txt and https://vfe.capital/index.md
+</script>
 
 <div class="sotm" id="sotModal" aria-hidden="true"><div class="sotm-bg" data-close></div><div class="sotm-panel" role="dialog" aria-modal="true" aria-label="Source of truth"></div></div>
 
@@ -1345,5 +1489,37 @@ form.lead{max-width:520px; margin:8px auto 0; text-align:left; position:relative
 })();
 </script>
 <script>(function(){var b=document.getElementById("themeToggle");if(!b)return;var mc=document.querySelector('meta[name="theme-color"]');function meta(t){if(mc)mc.setAttribute("content",t==="light"?"#faf8f3":"#0a0c10");}meta(document.documentElement.getAttribute("data-theme")||"light");b.addEventListener("click",function(){var cur=document.documentElement.getAttribute("data-theme")==="dark"?"dark":"light";var n=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",n);try{localStorage.setItem("vfe-theme",n);}catch(e){}meta(n);});})();</script>
+<script>
+(function(){
+ var mdEl=document.getElementById('machineMd'),doc=document.getElementById('mDoc');
+ var openBtn=document.getElementById('machineToggle'),copyBtn=document.getElementById('mCopy');
+ if(!mdEl||!doc) return;
+ var MD=mdEl.textContent.trim();
+ function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+ function render(md){var out=[],inl=false,tag='';function cl(){if(inl){out.push('</'+tag+'>');inl=false;}}
+  md.split('\n').forEach(function(ln){var e=esc(ln),m;
+   if(/^### /.test(ln)){cl();out.push('<h3>'+e.slice(4)+'</h3>');}
+   else if(/^## /.test(ln)){cl();out.push('<h2>'+e.slice(3)+'</h2>');}
+   else if(/^# /.test(ln)){cl();out.push('<h1>'+e.slice(2)+'</h1>');}
+   else if(/^> /.test(ln)){cl();out.push('<blockquote>'+esc(ln.slice(2))+'</blockquote>');}
+   else if(/^- /.test(ln)){if(!inl||tag!=='ul'){cl();out.push('<ul>');inl=true;tag='ul';}out.push('<li>'+e.slice(2)+'</li>');}
+   else if((m=ln.match(/^(\d+)\. (.*)$/))){if(!inl||tag!=='ol'){cl();out.push('<ol>');inl=true;tag='ol';}out.push('<li>'+esc(m[2])+'</li>');}
+   else if(/^---\s*$/.test(ln)){cl();out.push('<hr>');}
+   else if(ln.trim()===''){cl();}
+   else{cl();out.push('<p>'+e+'</p>');}});
+  cl();return out.join('');}
+ function renderRaw(md){return md.split('\n').map(function(ln){var e=esc(ln);if(/^#{1,3} /.test(ln))return '<span class="mh">'+e+'</span>';if(/^> /.test(ln))return '<span class="mq">'+e+'</span>';if(/^- /.test(ln)||/^\d+\. /.test(ln))return '<span class="ml">'+e+'</span>';if(/^---/.test(ln))return '<span class="mr">'+e+'</span>';return e;}).join('\n');}
+ doc.innerHTML=renderRaw(MD);
+ var prevHash='#about';
+ function setLabel(){if(!openBtn)return;var on=document.body.classList.contains('machine-on');openBtn.innerHTML=on?'&larr; Human':'&lt;/&gt; Machine';openBtn.setAttribute('aria-label',on?'Switch back to the human view':'Switch to the machine-readable view of this page');}
+ function openM(){if(document.body.classList.contains('machine-on'))return;if(location.hash!=='#machine')prevHash=location.hash||'#about';document.body.classList.add('machine-on');var mv=document.getElementById('machine-view');if(mv)mv.scrollTop=0;if(location.hash!=='#machine'){location.hash='#machine';}setLabel();}
+ function closeM(){document.body.classList.remove('machine-on');if(location.hash==='#machine'){history.replaceState(null,'',prevHash||'#about');}setLabel();}
+ openBtn&&openBtn.addEventListener('click',function(){if(document.body.classList.contains('machine-on'))closeM();else openM();});
+ [].slice.call(document.querySelectorAll('[data-nav]')).forEach(function(a){a.addEventListener('click',function(){if(document.body.classList.contains('machine-on'))closeM();});});
+ window.addEventListener('hashchange',function(){if(location.hash==='#machine'){openM();}else if(document.body.classList.contains('machine-on')){closeM();}});
+ if(location.hash==='#machine'){openM();}else{setLabel();}
+ copyBtn&&copyBtn.addEventListener('click',function(){var b=this;try{navigator.clipboard.writeText(MD).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy markdown';},1500);});}catch(e){}});
+})();
+</script>
 </body>
 </html>
