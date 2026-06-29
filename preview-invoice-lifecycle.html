@@ -7,105 +7,124 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{--paper:#faf8f3;--ink:#11141b;--gold:#c9a96e;--gold-deep:#8a7548;--muted:#6a7180;--border:#e2dcce;}
+:root{--paper:#faf8f3;--ink:#11141b;--gold:#c9a96e;--gold-deep:#8a7548;--muted:#6a7180;--border:#e2dcce;--obsidian:#0b0e13;}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:1040px;margin:0 auto;padding:0 32px;}
-.intro{min-height:64vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.intro{min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
 .kick{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:16px;}
-.intro h1{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(38px,5.4vw,64px);line-height:1.04;letter-spacing:-1px;margin:0;max-width:14ch;}
+.intro h1{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(40px,6vw,76px);line-height:1.02;letter-spacing:-1.5px;margin:0;max-width:13ch;}
 .intro h1 em{font-style:italic;color:var(--gold-deep);}
-.intro p{font-size:clamp(15px,1.6vw,18px);color:#494f5c;max-width:46ch;margin:18px auto 0;line-height:1.5;}
-.scrollcue{margin-top:30px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;animation:bob 2s ease-in-out infinite;}
+.intro p{font-size:clamp(15px,1.6vw,18px);color:#494f5c;max-width:44ch;margin:20px auto 0;line-height:1.5;}
+.scrollcue{margin-top:34px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;animation:bob 2s ease-in-out infinite;}
 @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
-.gbx-scroll{position:relative;height:560vh;}
-.gbx-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
-.gbx-h{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:26px;text-align:center;}
-.gbx-stage{display:grid;grid-template-columns:1fr 220px 1fr;gap:26px;align-items:center;max-width:1020px;width:100%;padding:0 28px;}
-.gbx-panel{border-radius:16px;padding:26px 26px;display:flex;flex-direction:column;}
-.gbx-black{background:#0b0e13;border:1px solid #1f242e;}
-.gbx-glass{background:linear-gradient(160deg,#ffffff,#f3efe6);border:1px solid var(--border);box-shadow:0 26px 60px -42px rgba(17,20,27,.28);}
-.gbx-tag{font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.gbx-black .gbx-tag{color:#5f6775;}.gbx-glass .gbx-tag{color:var(--gold-deep);}
-.gbx-dot{width:6px;height:6px;border-radius:50%;}
-.gbx-black .gbx-dot{background:#3a4150;}.gbx-glass .gbx-dot{background:var(--gold);box-shadow:0 0 7px rgba(201,169,110,.6);}
-.gbx-body{transition:opacity .24s ease, transform .24s ease;}
-.auto-tag{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',monospace;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold-deep);background:rgba(201,169,110,.13);border:1px solid rgba(201,169,110,.32);border-radius:30px;padding:4px 11px;margin-bottom:13px;align-self:flex-start;}
-.auto-tag svg{width:11px;height:11px;}
-.line{font-size:17px;line-height:1.42;margin:0;}
-.gbx-black .line{color:#aab0bc;}.gbx-glass .line{color:var(--ink);font-weight:500;}
-.chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px;}
-.chips span{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.3px;color:var(--gold-deep);border:1px solid rgba(201,169,110,.32);border-radius:30px;padding:4px 11px;opacity:0;animation:vin .45s ease forwards;}
-.chips span:nth-child(1){animation-delay:.05s;}.chips span:nth-child(2){animation-delay:.13s;}.chips span:nth-child(3){animation-delay:.21s;}
-.chips svg{width:12px;height:12px;}
-@keyframes vin{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-.gbx-list{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;}
-.stage-icon{width:62px;height:62px;color:var(--gold-deep);transition:opacity .24s ease,transform .24s ease;}
-.stage-icon svg{width:100%;height:100%;}
-.stage-name{font-family:'Fraunces',Georgia,serif;font-size:25px;color:var(--ink);transition:opacity .24s ease;line-height:1;}
-.stage-dots{display:flex;gap:8px;}
-.stage-dots i{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .3s,transform .3s;}
-.stage-dots i.on{background:var(--gold);transform:scale(1.25);}
-.gbx-count{font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:1.4px;color:var(--muted);}
-.outro{min-height:56vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
-.outro h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(30px,4.4vw,52px);margin:0;letter-spacing:-.5px;}
+.gbx-scroll{position:relative;height:600vh;}
+.gbx-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:64px 0 34px;}
+.gbx-h{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold-deep);text-align:center;margin-bottom:20px;}
+.gbx-stage{display:grid;grid-template-columns:1fr 300px 1fr;gap:32px;align-items:stretch;max-width:1440px;width:100%;margin:0 auto;padding:0 44px;flex:1;min-height:0;max-height:78vh;}
+.col{display:flex;flex-direction:column;min-height:0;}
+.col-top{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:13px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.col-old .col-top{color:#9aa0ad;}.col-new .col-top{color:var(--gold-deep);}
+.cdot{width:7px;height:7px;border-radius:50%;}.col-old .cdot{background:#b6bcc6;}.col-new .cdot{background:var(--gold);box-shadow:0 0 8px rgba(201,169,110,.6);}
+.card-img{flex:1;border-radius:18px;overflow:hidden;min-height:0;transition:opacity .26s ease,transform .26s ease;display:flex;}
+.col-cap{margin-top:15px;text-align:center;font-size:14.5px;line-height:1.4;min-height:40px;transition:opacity .26s ease;}
+.col-old .col-cap{color:#6a7180;}.col-new .col-cap{color:#3a404c;font-weight:500;}
+/* old-way image */
+.old-card{flex:1;background:linear-gradient(160deg,#efece4,#e6e1d6);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:34px;position:relative;}
+.old-ic{width:96px;height:96px;color:#a9a596;}.old-ic svg{width:100%;height:100%;}
+.old-redact{display:flex;flex-direction:column;gap:9px;width:62%;}
+.old-redact span{height:12px;border-radius:3px;background:#cfcabb;}
+.old-lab{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#97927f;}
+/* glass / prototype snippet image (dark product UI) */
+.ui-card{flex:1;background:var(--obsidian);border:1px solid #20242e;display:flex;flex-direction:column;overflow:hidden;}
+.ui-bar{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid #1b2029;background:#0e131a;}
+.ui-bar i{width:8px;height:8px;border-radius:50%;background:#2a313d;}
+.ui-t{margin-left:8px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;color:#aeb4c0;}
+.ui-live{margin-left:auto;font-family:'Geist Mono',monospace;font-size:9.5px;letter-spacing:1.4px;color:#6fb88a;display:flex;align-items:center;gap:6px;}
+.ui-live b{width:6px;height:6px;border-radius:50%;background:#6fb88a;box-shadow:0 0 7px #6fb88a;}
+.ui-rows{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:14px 18px;}
+.ui-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #161b23;}
+.ui-row:last-child{border-bottom:0;}
+.rl{font-family:'Fraunces',Georgia,serif;font-size:19px;color:#dfe2e7;}
+.rs{display:inline-flex;align-items:center;gap:8px;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.5px;color:var(--gold);white-space:nowrap;}
+.rs svg{width:14px;height:14px;}
+/* center */
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;}
+.stage-num{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--muted);}
+.stage-name{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(40px,4.6vw,80px);line-height:.96;letter-spacing:-1.5px;color:var(--ink);transition:opacity .26s ease,transform .26s ease;}
+.stage-dots{display:flex;gap:9px;}
+.stage-dots i{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background .3s,transform .3s;}
+.stage-dots i.on{background:var(--gold);transform:scale(1.3);}
+.outro{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.outro h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(30px,4.4vw,54px);margin:0;letter-spacing:-.5px;}
 .outro h2 em{font-style:italic;color:var(--gold-deep);}
 .outro p{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--muted);margin-top:14px;text-transform:uppercase;}
-@media(max-width:840px){.gbx-stage{grid-template-columns:1fr;gap:14px;}.gbx-list{order:-1;}.stage-icon{width:48px;height:48px;}}
+@media(max-width:920px){.gbx-stage{grid-template-columns:1fr;gap:14px;max-height:none;}.center{order:-1;}.stage-name{font-size:clamp(34px,9vw,52px);}.card-img{min-height:200px;}.gbx-pin{height:auto;min-height:100vh;}}
 </style>
 </head>
 <body>
 <section class="intro"><div class="wrap">
   <div class="kick">The Invoice Life Cycle</div>
   <h1>One receivable, <em>five stages, in the open.</em></h1>
-  <p>Intake to monitored. Everywhere else, each stage is manual and opaque. Scroll: the old way, and the Glass Box.</p>
+  <p>The old way on the left. The Glass Box on the right. Scroll the whole pipeline.</p>
   <div class="scrollcue">Scroll &darr;</div>
 </div></section>
 <section class="gbx-scroll" id="gbxScroll"><div class="gbx-pin">
-  <div class="gbx-h">The old way &middot; and the Glass Box, stage by stage</div>
+  <div class="gbx-h">The old way &middot; and the Glass Box</div>
   <div class="gbx-stage">
-    <div class="gbx-panel gbx-black"><div class="gbx-tag"><span class="gbx-dot"></span>Black box</div><div class="gbx-body" id="blackBody"></div></div>
-    <div class="gbx-list">
-      <div class="stage-icon" id="stageIcon"></div>
+    <div class="col col-old">
+      <div class="col-top"><span class="cdot"></span>The old way</div>
+      <div class="card-img" id="oldImg"></div>
+      <div class="col-cap" id="oldCap"></div>
+    </div>
+    <div class="center">
+      <div class="stage-num" id="stageNum">Stage 01</div>
       <div class="stage-name" id="stageName">Intake</div>
       <div class="stage-dots" id="stageDots"></div>
-      <div class="gbx-count" id="gbxCount">01 / 05</div>
     </div>
-    <div class="gbx-panel gbx-glass"><div class="gbx-body" id="glassBody"></div></div>
+    <div class="col col-new">
+      <div class="col-top"><span class="cdot"></span>The Glass Box</div>
+      <div class="card-img" id="newImg"></div>
+      <div class="col-cap" id="newCap"></div>
+    </div>
   </div>
 </div></section>
 <section class="outro"><div class="wrap"><h2>Intake to monitored. <em>Every stage, on the record.</em></h2><p>One receivable, one live chain</p></div></section>
 <script>
-var CK='<svg viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2"><path d="M5 12.5l4 4L19 7"/></svg>';
-var BOLT='<svg viewBox="0 0 24 24" fill="#8a7548"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>';
+var CK='<svg viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2.2"><path d="M5 12.5l4 4L19 7"/></svg>';
 var IC={
- intake:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l2-8h12l2 8"/><path d="M4 13v6h16v-6h-5l-1.4 2H10.4L9 13H4z"/><path d="M12 2.5v6"/><path d="M9.5 6L12 8.5 14.5 6"/></svg>',
- verification:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l8 4v6c0 4.5-3.2 7.4-8 9-4.8-1.6-8-4.5-8-9v-6z"/><path d="M8.5 12l2.4 2.4 4.6-5"/></svg>',
- decision:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l10 10-10 10L2 12z"/><path d="M8.4 12l2.4 2.4 4.8-5.2"/></svg>',
- funding:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg>',
- monitoring:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2.5-6 4 13 2.5-7H22"/></svg>'
+ docs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v11a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/><path d="M3 7v13a1 1 0 0 0 1 1h11"/></svg>',
+ glass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.6-4.6"/></svg>',
+ stamp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4l-1 4h2a3 3 0 0 1 3 3H5a3 3 0 0 1 3-3h2L9 7z"/><path d="M4 21h16"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+ cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/><path d="M8 14h3v3H8z"/></svg>'
 };
 var DATA=[
- {key:'intake',name:'Intake',bl:"Documents arrive in a dozen formats and get keyed in by hand.",auto:"Ingested at intake",gl:"Ingested and validated the moment the receivable arrives.",v:["Structured","Attached"]},
- {key:'verification',name:'Verification',bl:"A glance and a phone call. Fraud slips through the gaps.",auto:"Verified at the source",gl:"Checked at the source, layer by layer - identity, documents, network.",v:["Authority","Authentic","Network"]},
- {key:'decision',name:'Decision',bl:"‘Approved.’ The reasoning lives in someone’s head.",auto:"Decided by rule",gl:"Underwritten by rule, the same way every time, and replayable.",v:["Rule-based","Replayable"]},
- {key:'funding',name:'Funding',bl:"Approval waits in a queue. Cash takes a day, or three.",auto:"Funded by rule",gl:"Cleared at origination and funded fast, reserve held by rule.",v:["No closing day","Fast to cash"]},
- {key:'monitoring',name:'Monitoring',bl:"After funding the book sleeps until the next field exam.",auto:"Watched continuously",gl:"Watched live through collection and close - covenants, concentration, disputes.",v:["Covenants live","Through to close"]}
+ {num:'Stage 01',name:'Intake',ic:'docs',oldLab:'Email · fax · re-keyed',oldCap:'Documents arrive in a dozen formats and get typed in by hand.',
+  rows:[['Bill of lading','captured'],['Rate confirmation','captured'],['Proof of delivery','captured']],newCap:'Ingested and structured the moment the load delivers.'},
+ {num:'Stage 02',name:'Verification',ic:'glass',oldLab:'Eyeball · phone call',oldCap:'A clerk glances and dials a number. Fraud slips the gaps.',
+  rows:[['Identity & authority','pass'],['Operational reality','pass'],['Documents authentic','pass'],['Network screen','pass']],newCap:'Checked at the source, layer by layer, every time.'},
+ {num:'Stage 03',name:'Decision',ic:'stamp',oldLab:'‘Approved’ · in someone’s head',oldCap:'The reasoning lives in a person. Ask twice, get two answers.',
+  rows:[['Eligibility rule','pass'],['Applied the same way','every time'],['Replayable','to the document']],newCap:'Underwritten by rule, and replayable to the proof.'},
+ {num:'Stage 04',name:'Funding',ic:'clock',oldLab:'In a queue · a day, or three',oldCap:'Approval waits on a person while the carrier waits on fuel.',
+  rows:[['Cleared at origination','yes'],['Funded','fast'],['Reserve','held by rule']],newCap:'Gated at origination, funded fast, no closing day.'},
+ {num:'Stage 05',name:'Monitoring',ic:'cal',oldLab:'Quiet until the field exam',oldCap:'After funding the book sleeps until the next exam, months out.',
+  rows:[['Covenants','within tolerance'],['Concentration','ok'],['Watch','continuous']],newCap:'Watched live through collection and close.'}
 ];
 var N=DATA.length,cur=-1;
-var blackBody=document.getElementById('blackBody'),glassBody=document.getElementById('glassBody');
-var stageIcon=document.getElementById('stageIcon'),stageName=document.getElementById('stageName'),count=document.getElementById('gbxCount'),sec=document.getElementById('gbxScroll'),dotsWrap=document.getElementById('stageDots');
+var oldImg=document.getElementById('oldImg'),newImg=document.getElementById('newImg'),oldCap=document.getElementById('oldCap'),newCap=document.getElementById('newCap'),stageNum=document.getElementById('stageNum'),stageName=document.getElementById('stageName'),dotsWrap=document.getElementById('stageDots'),sec=document.getElementById('gbxScroll');
 DATA.forEach(function(){var d=document.createElement('i');dotsWrap.appendChild(d);});
 var dots=[].slice.call(dotsWrap.children);
 function render(i){var d=DATA[i];
- blackBody.innerHTML='<div class="gbx-tag"><span class="gbx-dot"></span>Black box</div><p class="line">'+d.bl+'</p>';
- glassBody.innerHTML='<span class="auto-tag">'+BOLT+'Automated &middot; '+d.auto+'</span><p class="line">'+d.gl+'</p><div class="chips">'+d.v.map(function(x){return '<span>'+CK+x+'</span>';}).join('')+'</div>';
- stageIcon.innerHTML=IC[d.key];stageName.textContent=d.name;count.textContent='0'+(i+1)+' / 0'+N;
+ oldImg.innerHTML='<div class="old-card"><div class="old-ic">'+IC[d.ic]+'</div><div class="old-redact"><span style="width:100%"></span><span style="width:70%"></span></div><div class="old-lab">'+d.oldLab+'</div></div>';
+ var rows=d.rows.map(function(r){return '<div class="ui-row"><span class="rl">'+r[0]+'</span><span class="rs">'+CK+r[1]+'</span></div>';}).join('');
+ newImg.innerHTML='<div class="ui-card"><div class="ui-bar"><i></i><i></i><i></i><span class="ui-t">'+d.name+' · VFE</span><span class="ui-live"><b></b>LIVE</span></div><div class="ui-rows">'+rows+'</div></div>';
+ oldCap.textContent=d.oldCap;newCap.textContent=d.newCap;stageNum.textContent=d.num;stageName.textContent=d.name;
  dots.forEach(function(el,j){el.classList.toggle('on',j===i);});}
 function setActive(i){if(i===cur)return;var first=cur===-1;cur=i;
  if(first){render(i);return;}
- [blackBody,glassBody,stageIcon,stageName].forEach(function(b){b.style.opacity=0;});
- setTimeout(function(){render(i);[blackBody,glassBody,stageIcon,stageName].forEach(function(b){b.style.opacity=1;});},190);}
+ [oldImg,newImg,oldCap,newCap,stageName].forEach(function(b){b.style.opacity=0;});
+ setTimeout(function(){render(i);[oldImg,newImg,oldCap,newCap,stageName].forEach(function(b){b.style.opacity=1;});},190);}
 function onScroll(){var r=sec.getBoundingClientRect();var range=sec.offsetHeight-window.innerHeight;
  var p=range>0?Math.min(Math.max(-r.top,0),range)/range:0;
  setActive(Math.max(0,Math.min(N-1,Math.floor(p*N*0.999))));}
