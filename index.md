@@ -18,7 +18,7 @@ Freight factoring is a large, old industry that runs on trust and opacity. A car
 - Funding waits in a queue, so the carrier waits on fuel and payroll.
 - After funding the book goes quiet until the next field exam, often months later.
 - Cash is reconciled by hand and the true state of the book is a month-end report.
-For the carrier this means slow cash and mystery fees. For the capital behind the factor it means managing a book it cannot see.
+For the carrier this means slow cash and mystery fees. For the capital behind the factor it means managing a book it cannot see. And for anyone trying to start or scale a factor it is a closed door: capital requires a track record, and a track record requires capital, so most never get in.
 
 ## What VFE does differently
 - Verified at the source: every receivable is checked against original documents at funding, not sampled twice a year in a field exam.

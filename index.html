@@ -484,7 +484,7 @@ body.machine-on .mcopy-nav{display:inline-flex;margin-left:auto;}
       <span class="vrule"><span class="vkick">VFE &middot; The Factoring Exchange &middot; Est. 2026</span></span>
       <h1>Factoring <span class="serif-accent">made investable.</span></h1>
       <svg class="vorn" viewBox="0 0 150 14" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><line x1="0" y1="7" x2="60" y2="7" opacity="0.5"/><line x1="90" y1="7" x2="150" y2="7" opacity="0.5"/><path d="M66 7 L75 2 L84 7 L75 12 Z" fill="currentColor" stroke="none" opacity="0.85"/></svg>
-      <p class="vsub">The exchange where factoring runs: one standardized, glass-box operation every factor can run on, and capital can finally <span style="white-space:nowrap">see into</span>.</p>
+      <p class="vsub">The exchange where factoring runs: one standardized, glass-box operation, with the access to capital no factor could ever <span style="white-space:nowrap">get alone</span>.</p>
       <div class="hero-actions">
         <a class="btn btn-gold" href="#capital">Capital Providers <span class="arrow">&rarr;</span></a>
         <a class="btn btn-ghost" href="#factors">For factors</a>
@@ -511,7 +511,7 @@ body.machine-on .mcopy-nav{display:inline-flex;margin-left:auto;}
         <div class="prose">
           <span class="kicker" style="margin-bottom:18px;">The model</span>
           <h2 style="margin:0 0 20px;">One exchange. Every factor runs on it.</h2>
-          <p>VFE is not a factor. It is the operational layer factoring runs on: underwriting, source-verification, collections, cash control, and covenants, standardized and enforced in code. The factor brings the clients and stays the originator. VFE runs the operations and arranges the capital, so the capital side deals with one system instead of a thousand strangers.</p>
+          <p>VFE is not a factor. It is the operational layer factoring runs on: underwriting, source-verification, collections, cash control, and covenants, standardized and enforced in code. The factor brings the clients and stays the originator. VFE runs the operations and arranges the capital, so the capital side deals with one system instead of a thousand strangers. Most people who could run a factor never get to start one; the exchange exists to change that.</p>
           <p><a href="#glass-box" style="color:var(--gold-deep);">Go inside the glass box <span aria-hidden="true">&rarr;</span></a></p>
         </div>
         <div class="lifeflow" aria-label="The invoice lifecycle, end to end">
@@ -535,13 +535,31 @@ body.machine-on .mcopy-nav{display:inline-flex;margin-left:auto;}
     </div>
   </section>
   <section id="about-wall">
+    <style>
+    .wall-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;max-width:940px;margin:0 auto;}
+    .wall-cell{background:var(--bg);padding:clamp(26px,3.4vw,44px);}
+    .wall-cell.alt{background:var(--bg-1);}
+    .wall-tag{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-3);margin-bottom:14px;display:block;}
+    .wall-cell h3{font-family:var(--font-display);font-weight:500;font-size:clamp(20px,2.2vw,26px);line-height:1.25;margin:0 0 12px;color:var(--text);}
+    .wall-cell p{font-size:15px;line-height:1.6;color:var(--text-2);margin:0;}
+    .wall-cell.alt .wall-tag{color:var(--gold-deep);}
+    @media(max-width:720px){.wall-grid{grid-template-columns:1fr;}}
+    </style>
     <div class="wrap">
-      <div class="band center reveal">
-        <span class="kicker">The wall</span>
-        <h2>Starting a factor is a catch-22.</h2>
-        <p>You need a track record to get capital, and you need capital to build a track record. Banks do not underwrite what they cannot see, so every new factor starts slow, on its own money, and most never scale. <strong>VFE breaks that wall once, for the whole exchange:</strong> standardized operations, live visibility, and controls the capital side can verify. If you can originate, you can operate.</p>
-        <div style="margin-top:30px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;"><a class="btn btn-gold" href="#factors">Join the exchange <span class="arrow">&rarr;</span></a></div>
+      <div class="section-head center reveal"><span class="kicker center">The wall</span><h2>Starting a factor is a catch-22.</h2></div>
+      <div class="wall-grid reveal">
+        <div class="wall-cell">
+          <span class="wall-tag">Alone</span>
+          <h3>No track record, no capital. No capital, no track record.</h3>
+          <p>Banks do not underwrite what they cannot see, and every new factor is an unknown. So you start slow, on your own money, and most never scale past it.</p>
+        </div>
+        <div class="wall-cell alt">
+          <span class="wall-tag">On the exchange</span>
+          <h3>The wall gets broken once, for everyone.</h3>
+          <p>Standardized operations, live visibility, and controls the capital side can verify, the same for every factor on VFE. If you can originate, you can operate.</p>
+        </div>
       </div>
+      <div style="margin-top:30px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;"><a class="btn btn-gold" href="#factors">Join the exchange <span class="arrow">&rarr;</span></a></div>
     </div>
   </section>
   <section id="about-parallel">
@@ -577,7 +595,7 @@ body.machine-on .mcopy-nav{display:inline-flex;margin-left:auto;}
       <div class="hero-copy">
         <span class="kicker" style="margin-bottom:22px;">For factors, present and future</span>
         <h1>Factoring <span class="serif-accent">in a box.</span></h1>
-        <p class="lead">You bring the clients and your own capital at first risk. VFE brings everything else: standardized operations, source-verification, collections, the live ledger, and the arranged capital behind you. The operation you could not build alone, running from day one.</p>
+        <p class="lead">You could never get the bank, the systems, or the standing to start a factor alone. Bring your clients; the exchange is the rest, running day one.</p>
         <div class="hero-actions">
           <a class="btn btn-gold" href="#factors-contact">Get early access <span class="arrow">&rarr;</span></a>
           <a class="btn btn-ghost" href="#factors-how">How it works</a>
@@ -1161,7 +1179,7 @@ Freight factoring is a large, old industry that runs on trust and opacity. A car
 - Funding waits in a queue, so the carrier waits on fuel and payroll.
 - After funding the book goes quiet until the next field exam, often months later.
 - Cash is reconciled by hand and the true state of the book is a month-end report.
-For the carrier this means slow cash and mystery fees. For the capital behind the factor it means managing a book it cannot see.
+For the carrier this means slow cash and mystery fees. For the capital behind the factor it means managing a book it cannot see. And for anyone trying to start or scale a factor it is a closed door: capital requires a track record, and a track record requires capital, so most never get in.
 
 ## What VFE does differently
 - Verified at the source: every receivable is checked against original documents at funding, not sampled twice a year in a field exam.
